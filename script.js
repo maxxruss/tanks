@@ -1,190 +1,217 @@
 var FIELD_SIZE_X = 20;
 var FIELD_SIZE_Y = 20;
-var d = document;
 var gameIsRunning = true;
 var direction = 'y-';
+var bullet_id = 1;
 var oldDirection = 'y-';
 var tank_timer;
 var TANK_SPEED = 300;
 var BULLET_SPEED = 300;
 var directionBullet;
 var oldDirectionBullet;
+var new_unit;
 
+var tank = new Tank();
 
-d.querySelector('.start_game').addEventListener('click', startGame);
-addEventListener('keydown', changeDirection);
+$('.start_game').on('click', startGame);
+$(document).keydown(changeDirection);
 
 /**
  * Генерация игрового поля*/
 
-var table = d.querySelector('.game_field');
+var $table = $('.game_field');
 for (var i = 0; i <= FIELD_SIZE_X; i++) {
-    var row = d.createElement('tr');
-    row.className = 'row-' + i;
+    var $row = $('<tr />', {
+        class: 'row-' + i
+    });
     for (var j = 0; j <= FIELD_SIZE_Y; j++) {
-        var sell = d.createElement('td');
-        // sell.className = ('data-x = ' + i);
-        // sell.className = ('data-y = ' + j);
-        sell.className = ('sell-' + j + '-' + i);
-        row.appendChild(sell);
+        var $sell = $('<td />', {
+            class: ('sell-' + j + '-' + i)
+        });
+        $row.append($sell);
     }
-    table.appendChild(row);
+    $table.append($row);
 }
 
-/**
- *Расположение танка */
 
-function tankReLocation() {
+function Tank() {
+    // this.direction = 'y-';
+    // this.Olddirection = 'y-';
+    // this.bullet_id = 1;
+}
+
+/**Расположение танка*/
+
+Tank.prototype.location = function () {
     var start_coords_x = FIELD_SIZE_X / 2;
     var start_coords_y = FIELD_SIZE_Y / 2;
-    var coordsTank = d.querySelector('.sell-' + start_coords_x + '-' + start_coords_y);
-    console.log(start_coords_x);
-    console.log(start_coords_y);
-    coordsTank.classList.add('tank');
-    coordsTank.setAttribute('data-x', start_coords_x.toString());
-    coordsTank.setAttribute('data-y', start_coords_y.toString());
+
+    var $coordsTank = $('.sell-' + start_coords_x + '-' + start_coords_y);
+
+    $coordsTank.addClass('tank');
+    $coordsTank.attr('data-x', start_coords_x.toString());
+    $coordsTank.attr('data-y', start_coords_y.toString());
+    $coordsTank.attr('bullet-id', bullet_id);
+};
+
+/**Движение танка*/
+
+Tank.prototype.move = function () {
+
+    var tankItem = $('.tank');
+
+    // this.coords_x = parseInt(tankItem.attr('data-x'));
+    // this.coords_y = parseInt(tankItem.attr('data-y'));
+
+    var coords_x = parseInt(tankItem.attr('data-x'));
+    var coords_y = parseInt(tankItem.attr('data-y'));
+
+
+    switch (this.direction) {
+        case'x-':
+            new_unit = $('.sell-' + (coords_x -= 1) + '-' + (coords_y));
+            break;
+        case'x+':
+            new_unit = $('.sell-' + (coords_x += 1) + '-' + (coords_y));
+            break;
+        case'y-':
+            new_unit = $('.sell-' + (coords_x) + '-' + (coords_y -= 1));
+            break;
+        case'y+':
+            new_unit = $('.sell-' + (coords_x) + '-' + (coords_y += 1));
+            break;
+    }
+
+    tankItem.removeClass('tank');
+    tankItem.removeAttr('data-x');
+    tankItem.removeAttr('data-y');
+    tankItem.removeAttr('bullet-id');
+
+    new_unit.addClass('tank');
+    new_unit.attr('data-x', coords_x.toString());
+    new_unit.attr('data-y', coords_y.toString());
+    new_unit.attr('bullet-id', bullet_id);
+
+    // this.oldDirection = this.direction;
+};
+
+/**Выстрел танка*/
+
+function Bullet(id, direction) {
+    this.id = id;
+    this.direction = direction;
+    console.log(this.id, this.direction)
 }
 
+Bullet.prototype.shot = function () {
+    console.log(this.id, this.direction);
 
-/**
- *Старт игры */
+    var $bulletItem = $('[bullet-id = "' + this.id + '"]');
+    console.log($bulletItem);
+
+    var $bullet_coords_x = parseInt($bulletItem.attr('data-x'));
+    var $bullet_coords_y = parseInt($bulletItem.attr('data-y'));
+
+
+    // this.direction = tank.direction;
+
+    switch (this.direction) {
+        case'x-':
+            $bullet_coords_x -= 1;
+            break;
+        case'x+':
+            $bullet_coords_x += 1;
+            break;
+        case'y-':
+            $bullet_coords_y -= 1;
+            break;
+        case'y+':
+            $bullet_coords_y += 1;
+            break;
+    }
+
+    var $newBulletItem = $('.sell-' + ($bullet_coords_x) + '-' + ($bullet_coords_y));
+
+    $bulletItem.removeClass('bullet');
+    $bulletItem.removeAttr('data-x');
+    $bulletItem.removeAttr('data-y');
+    $bulletItem.removeAttr('bullet-id');
+
+    $newBulletItem.addClass('bullet');
+    $newBulletItem.attr('data-x', $bullet_coords_x.toString());
+    $newBulletItem.attr('data-y', $bullet_coords_y.toString());
+    $newBulletItem.attr('bullet-id', this.id);
+    oldDirectionBullet = directionBullet;
+};
+
+
+/**Старт игры*/
 
 function startGame() {
+    tank.location();
     // clearInterval(tank_timer);
-    tankReLocation();
     // setInterval(move, TANK_SPEED);
-
-    // move();
-
+    var $bulletItem = $('[bullet-id = "' + this.id + '"]');
+    console.log($bulletItem);
 }
 
 
-/**
- *Движение танка */
-function move() {
-    var tank = d.querySelector('.tank');
-
-    var coords_x = parseInt(tank.getAttribute('data-x'));
-    var coords_y = parseInt(tank.getAttribute('data-y'));
-    console.log(coords_y);
-
-    var new_unit;
-
-    switch (direction) {
-        case'x-':
-            new_unit = d.querySelector('.sell-' + (coords_x -= 1) + '-' + (coords_y));
-            break;
-        case'x+':
-            new_unit = d.querySelector('.sell-' + (coords_x += 1) + '-' + (coords_y));
-            break;
-        case'y-':
-            new_unit = d.querySelector('.sell-' + (coords_x) + '-' + (coords_y -= 1));
-            break;
-        case'y+':
-            new_unit = d.querySelector('.sell-' + (coords_x) + '-' + (coords_y += 1));
-            break;
-    }
-
-
-    new_unit.classList.add('tank');
-    tank.classList.remove('tank');
-
-    tank.removeAttribute('data-x');
-    tank.removeAttribute('data-y');
-
-    new_unit.setAttribute('data-x', coords_x.toString());
-    new_unit.setAttribute('data-y', coords_y.toString());
-    oldDirection = direction;
-}
-
-function bulletRelocation() {
-
-    var tank = d.querySelector('.tank');
-
-    var bullet_coords_x = parseInt(tank.getAttribute('data-x'));
-    var bullet_coords_y = parseInt(tank.getAttribute('data-y'));
-
-    var start_bullet;
-
-    switch (direction) {
-        case'x-':
-            start_bullet = d.querySelector('.sell-' + (bullet_coords_x -= 1) + '-' + (bullet_coords_y));
-            break;
-        case'x+':
-            start_bullet = d.querySelector('.sell-' + (bullet_coords_x += 1) + '-' + (bullet_coords_y));
-            break;
-        case'y-':
-            start_bullet = d.querySelector('.sell-' + (bullet_coords_x) + '-' + (bullet_coords_y -= 1));
-            break;
-        case'y+':
-            start_bullet = d.querySelector('.sell-' + (bullet_coords_x) + '-' + (bullet_coords_y += 1));
-            break;
-    }
-
-
-    start_bullet.classList.add('bullet');
-    start_bullet.setAttribute('data-x', bullet_coords_x.toString());
-    start_bullet.setAttribute('data-y', bullet_coords_y.toString());
-}
-
-function shot() {
-    var tank = d.querySelector('.tank');
-
-    var bullet_coords_x = parseInt(tank.getAttribute('data-x'));
-    var bullet_coords_y = parseInt(tank.getAttribute('data-y'));
-
-    var new_unit_bullet;
-
-    directionBullet = direction;
-
-    switch (direction) {
-        case'x-':
-            new_unit_bullet = d.querySelector('.sell-' + (bullet_coords_x -= 1) + '-' + (bullet_coords_y));
-            break;
-        case'x+':
-            new_unit_bullet = d.querySelector('.sell-' + (bullet_coords_x += 1) + '-' + (bullet_coords_y));
-            break;
-        case'y-':
-            new_unit_bullet = d.querySelector('.sell-' + (bullet_coords_x) + '-' + (bullet_coords_y -= 1));
-            break;
-        case'y+':
-            new_unit_bullet = d.querySelector('.sell-' + (bullet_coords_x) + '-' + (bullet_coords_y += 1));
-            break;
-    }
-
-    new_unit_bullet.classList.add('bullet');
-    bullet.classList.remove('bullet');
-
-    bullet.removeAttribute('data-x');
-    bullet.removeAttribute('data-y');
-
-    new_unit_bullet.setAttribute('data-x', bullet_coords_x.toString());
-    new_unit_bullet.setAttribute('data-y', bullet_coords_y.toString());
-    oldDirectionBullet = directionBullet;
-}
+// function bulletRelocation() {
+//
+//     var tank = d.querySelector('.tank');
+//
+//     var bullet_coords_x = parseInt(tank.getAttribute('data-x'));
+//     var bullet_coords_y = parseInt(tank.getAttribute('data-y'));
+//
+//     var start_bullet;
+//
+//     switch (direction) {
+//         case'x-':
+//             start_bullet = d.querySelector('.sell-' + (bullet_coords_x -= 1) + '-' + (bullet_coords_y));
+//             break;
+//         case'x+':
+//             start_bullet = d.querySelector('.sell-' + (bullet_coords_x += 1) + '-' + (bullet_coords_y));
+//             break;
+//         case'y-':
+//             start_bullet = d.querySelector('.sell-' + (bullet_coords_x) + '-' + (bullet_coords_y -= 1));
+//             break;
+//         case'y+':
+//             start_bullet = d.querySelector('.sell-' + (bullet_coords_x) + '-' + (bullet_coords_y += 1));
+//             break;
+//     }
+//
+//
+//     start_bullet.classList.add('bullet');
+//     start_bullet.setAttribute('data-x', bullet_coords_x.toString());
+//     start_bullet.setAttribute('data-y', bullet_coords_y.toString());
+// }
 
 
 function changeDirection(e) {
     switch (e.keyCode) {
         case 37: // Клавиша влево
-            direction = 'x-';
-            move();
+            tank.direction = 'x-';
+            tank.move();
             break;
         case 38: // Клавиша вверх
-            direction = 'y-';
-            move();
+            tank.direction = 'y-';
+            tank.move();
             break;
         case 39: // Клавиша вправо
-            direction = 'x+';
-            move();
+            tank.direction = 'x+';
+            tank.move();
             break;
         case 40: // Клавиша вниз
-            direction = 'y+';
-            move();
+            tank.direction = 'y+';
+            tank.move();
             break;
         case 32: // Выстрел
-            bulletRelocation();
-            setInterval(shot, BULLET_SPEED);
+            setInterval(function () {
+                var bullet = new Bullet(bullet_id, tank.direction);
+                bullet.shot();
+            }, BULLET_SPEED);
+            bullet_id++;
             break;
     }
 }
+
