@@ -6,12 +6,16 @@ var bullet_id = 1;
 var oldDirection = 'y-';
 var tank_timer;
 var TANK_SPEED = 300;
-var BULLET_SPEED = 300;
+var BULLET_SPEED = 50;
 var directionBullet;
 var oldDirectionBullet;
-var new_unit;
+// var new_unit;
 
 var tank = new Tank();
+tank.direction = 'y-';
+
+
+
 
 $('.start_game').on('click', startGame);
 $(document).keydown(changeDirection);
@@ -19,25 +23,26 @@ $(document).keydown(changeDirection);
 /**
  * Генерация игрового поля*/
 
-var $table = $('.game_field');
+var table = $('.game_field');
 for (var i = 0; i <= FIELD_SIZE_X; i++) {
-    var $row = $('<tr />', {
+    var row = $('<tr />', {
         class: 'row-' + i
     });
     for (var j = 0; j <= FIELD_SIZE_Y; j++) {
-        var $sell = $('<td />', {
-            class: ('sell-' + j + '-' + i)
+        var sell = $('<td />', {
+            class: 'cell-' + j + '-' + i + ' field_cell'
         });
-        $row.append($sell);
+        row.append(sell);
     }
-    $table.append($row);
+    table.append(row);
 }
 
 
 function Tank() {
     // this.direction = 'y-';
     // this.Olddirection = 'y-';
-    // this.bullet_id = 1;
+    this.bullet_id = 1;
+    this.old_bullet_id = this.bullet_id;
 }
 
 /**Расположение танка*/
@@ -46,12 +51,16 @@ Tank.prototype.location = function () {
     var start_coords_x = FIELD_SIZE_X / 2;
     var start_coords_y = FIELD_SIZE_Y / 2;
 
-    var $coordsTank = $('.sell-' + start_coords_x + '-' + start_coords_y);
+    var tank_startPosition = $('.cell-' + start_coords_x + '-' + start_coords_y);
 
-    $coordsTank.addClass('tank');
-    $coordsTank.attr('data-x', start_coords_x.toString());
-    $coordsTank.attr('data-y', start_coords_y.toString());
-    $coordsTank.attr('bullet-id', bullet_id);
+    tank_startPosition.removeClass('field_cell');
+
+    tank_startPosition.addClass('tank')
+        .attr('tank-x', start_coords_x.toString())
+        .attr('tank-y', start_coords_y.toString())
+        .attr('bullet-x', start_coords_x.toString())
+        .attr('bullet-y', start_coords_y.toString())
+        .attr('bullet-id', this.bullet_id);
 };
 
 /**Движение танка*/
@@ -63,34 +72,45 @@ Tank.prototype.move = function () {
     // this.coords_x = parseInt(tankItem.attr('data-x'));
     // this.coords_y = parseInt(tankItem.attr('data-y'));
 
-    var coords_x = parseInt(tankItem.attr('data-x'));
-    var coords_y = parseInt(tankItem.attr('data-y'));
+    var coords_x = parseInt(tankItem.attr('tank-x'));
+    var coords_y = parseInt(tankItem.attr('tank-y'));
 
 
     switch (this.direction) {
         case'x-':
-            new_unit = $('.sell-' + (coords_x -= 1) + '-' + (coords_y));
+            coords_x -= 1;
             break;
         case'x+':
-            new_unit = $('.sell-' + (coords_x += 1) + '-' + (coords_y));
+            coords_x += 1;
             break;
         case'y-':
-            new_unit = $('.sell-' + (coords_x) + '-' + (coords_y -= 1));
+            coords_y -= 1;
             break;
         case'y+':
-            new_unit = $('.sell-' + (coords_x) + '-' + (coords_y += 1));
+            coords_y += 1;
             break;
     }
 
-    tankItem.removeClass('tank');
-    tankItem.removeAttr('data-x');
-    tankItem.removeAttr('data-y');
-    tankItem.removeAttr('bullet-id');
+    var new_tankItem = $('.cell-' + (coords_x) + '-' + (coords_y));
 
-    new_unit.addClass('tank');
-    new_unit.attr('data-x', coords_x.toString());
-    new_unit.attr('data-y', coords_y.toString());
-    new_unit.attr('bullet-id', bullet_id);
+    if (new_tankItem.hasClass('field_cell') === true) {
+        tankItem.removeClass('tank')
+            .removeAttr('tank-x')
+            .removeAttr('tank-y')
+            .removeAttr('bullet-x')
+            .removeAttr('bullet-y')
+            .removeAttr('bullet-id')
+            .addClass('field_cell');
+
+        new_tankItem.addClass('tank')
+            .attr('tank-x', coords_x.toString())
+            .attr('tank-y', coords_y.toString())
+            .attr('bullet-x', coords_x.toString())
+            .attr('bullet-y', coords_y.toString())
+            .attr('bullet-id', this.bullet_id)
+            .removeClass('field_cell');
+    }
+
 
     // this.oldDirection = this.direction;
 };
@@ -100,91 +120,80 @@ Tank.prototype.move = function () {
 function Bullet(id, direction) {
     this.id = id;
     this.direction = direction;
-    console.log(this.id, this.direction)
+    // console.log(this.id, this.direction)
 }
 
 Bullet.prototype.shot = function () {
-    console.log(this.id, this.direction);
+    // console.log(this.id, this.direction);
 
-    var $bulletItem = $('[bullet-id = "' + this.id + '"]');
-    console.log($bulletItem);
+    var bulletItem = $('[bullet-id = "' + this.id + '"]');
 
-    var $bullet_coords_x = parseInt($bulletItem.attr('data-x'));
-    var $bullet_coords_y = parseInt($bulletItem.attr('data-y'));
+    if (bulletItem.length > 1) {
+        bulletItem = bulletItem.not('.tank')
+    }
+
+    console.log(this.id);
+
+    var bullet_coords_x = parseInt(bulletItem.attr('bullet-x'));
+    var bullet_coords_y = parseInt(bulletItem.attr('bullet-y'));
 
 
     // this.direction = tank.direction;
 
     switch (this.direction) {
         case'x-':
-            $bullet_coords_x -= 1;
+            bullet_coords_x -= 1;
             break;
         case'x+':
-            $bullet_coords_x += 1;
+            bullet_coords_x += 1;
             break;
         case'y-':
-            $bullet_coords_y -= 1;
+            bullet_coords_y -= 1;
             break;
         case'y+':
-            $bullet_coords_y += 1;
+            bullet_coords_y += 1;
             break;
     }
 
-    var $newBulletItem = $('.sell-' + ($bullet_coords_x) + '-' + ($bullet_coords_y));
+    var newBulletItem = $('.cell-' + (bullet_coords_x) + '-' + (bullet_coords_y));
 
-    $bulletItem.removeClass('bullet');
-    $bulletItem.removeAttr('data-x');
-    $bulletItem.removeAttr('data-y');
-    $bulletItem.removeAttr('bullet-id');
+    bulletItem.not('.tank')
+        .removeAttr('bullet-x')
+        .removeAttr('bullet-y')
+        .removeAttr('bullet-id')
+        .removeClass('bullet')
+        .addClass('field_cell');
 
-    $newBulletItem.addClass('bullet');
-    $newBulletItem.attr('data-x', $bullet_coords_x.toString());
-    $newBulletItem.attr('data-y', $bullet_coords_y.toString());
-    $newBulletItem.attr('bullet-id', this.id);
-    oldDirectionBullet = directionBullet;
+    // if (bulletItem.hasClass('tank')) {
+    //     bulletItem.attr('bullet-id', bullet_id);
+    // }
+
+    if (newBulletItem.hasClass('field_cell')) {
+        // console.log(bullet_id, this.id);
+
+        newBulletItem.addClass('bullet')
+            .removeClass('field_cell')
+            .attr('bullet-x', bullet_coords_x.toString())
+            .attr('bullet-y', bullet_coords_y.toString())
+            .attr('bullet-id', this.id);
+        // oldDirectionBullet = directionBullet;
+    }
+
 };
 
+
+// Bullet.prototype.flight = function () {
+//
+// }
 
 /**Старт игры*/
 
 function startGame() {
-    tank.location();
     // clearInterval(tank_timer);
     // setInterval(move, TANK_SPEED);
-    var $bulletItem = $('[bullet-id = "' + this.id + '"]');
-    console.log($bulletItem);
+    // var bulletItem = $('[bullet-id = "' + bullet_id + '"]');
+    // console.log(bulletItem);
 }
-
-
-// function bulletRelocation() {
-//
-//     var tank = d.querySelector('.tank');
-//
-//     var bullet_coords_x = parseInt(tank.getAttribute('data-x'));
-//     var bullet_coords_y = parseInt(tank.getAttribute('data-y'));
-//
-//     var start_bullet;
-//
-//     switch (direction) {
-//         case'x-':
-//             start_bullet = d.querySelector('.sell-' + (bullet_coords_x -= 1) + '-' + (bullet_coords_y));
-//             break;
-//         case'x+':
-//             start_bullet = d.querySelector('.sell-' + (bullet_coords_x += 1) + '-' + (bullet_coords_y));
-//             break;
-//         case'y-':
-//             start_bullet = d.querySelector('.sell-' + (bullet_coords_x) + '-' + (bullet_coords_y -= 1));
-//             break;
-//         case'y+':
-//             start_bullet = d.querySelector('.sell-' + (bullet_coords_x) + '-' + (bullet_coords_y += 1));
-//             break;
-//     }
-//
-//
-//     start_bullet.classList.add('bullet');
-//     start_bullet.setAttribute('data-x', bullet_coords_x.toString());
-//     start_bullet.setAttribute('data-y', bullet_coords_y.toString());
-// }
 
 
 function changeDirection(e) {
@@ -206,12 +215,15 @@ function changeDirection(e) {
             tank.move();
             break;
         case 32: // Выстрел
+            var bullet = new Bullet(tank.bullet_id, tank.direction);
             setInterval(function () {
-                var bullet = new Bullet(bullet_id, tank.direction);
                 bullet.shot();
+                console.log(tank.bullet_id);
+
             }, BULLET_SPEED);
-            bullet_id++;
+            tank.bullet_id++;
             break;
     }
 }
 
+tank.location();

@@ -1,11 +1,12 @@
 .game_wrap {
     width: 100%;
-    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .game_field {
-    display: inline-block;
-    margin: 100px auto;
+
 }
 
 td {
@@ -24,6 +25,7 @@ td {
 .start_game {
     width: 100px;
     height: 30px;
+    align-items: center;
 }
 
 .bullet {
