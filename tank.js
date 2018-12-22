@@ -7,18 +7,10 @@ var oldDirection = 'y-';
 var tank_timer;
 var TANK_SPEED = 300;
 var BULLET_SPEED = 50;
+var ENEMY_SPEED = 1000;
 var directionBullet;
 var oldDirectionBullet;
-// var new_unit;
 
-var tank = new Tank();
-tank.direction = 'y-';
-
-
-
-
-$('.start_game').on('click', startGame);
-$(document).keydown(changeDirection);
 
 /**
  * Генерация игрового поля*/
@@ -38,36 +30,61 @@ for (var i = 0; i <= FIELD_SIZE_X; i++) {
 }
 
 
-function Tank() {
+function Tank(type_unit) {
+    this.type_unit = type_unit;
+    this.coords_x = FIELD_SIZE_X / 2;
+    this.coords_y = FIELD_SIZE_Y / 2;
     // this.direction = 'y-';
     // this.Olddirection = 'y-';
     this.bullet_id = 1;
-    this.old_bullet_id = this.bullet_id;
 }
 
 /**Расположение танка*/
 
 Tank.prototype.location = function () {
-    var start_coords_x = FIELD_SIZE_X / 2;
-    var start_coords_y = FIELD_SIZE_Y / 2;
 
-    var tank_startPosition = $('.cell-' + start_coords_x + '-' + start_coords_y);
+    var startPosition = $('.cell-' + this.coords_x + '-' + this.coords_y);
 
-    tank_startPosition.removeClass('field_cell');
+    startPosition.removeClass('field_cell');
 
-    tank_startPosition.addClass('tank')
-        .attr('tank-x', start_coords_x.toString())
-        .attr('tank-y', start_coords_y.toString())
-        .attr('bullet-x', start_coords_x.toString())
-        .attr('bullet-y', start_coords_y.toString())
+    startPosition.addClass(this.type_unit)
+        .attr('tank-x', this.coords_x.toString())
+        .attr('tank-y', this.coords_y.toString())
+        .attr('bullet-x', this.coords_x.toString())
+        .attr('bullet-y', this.coords_y.toString())
         .attr('bullet-id', this.bullet_id);
+
+    this.nextItem();
+
+
 };
+
+Tank.prototype.nextItem = function () {
+
+    switch (this.direction) {
+        case'x-':
+            this.coords_x -= 1;
+            break;
+        case'x+':
+            this.coords_x += 1;
+            break;
+        case'y-':
+            this.coords_y -= 1;
+            break;
+        case'y+':
+            this.coords_y += 1;
+            break;
+    }
+
+    this.new_tankItem = $('.cell-' + this.coords_x + '-' + this.coords_y);
+};
+
 
 /**Движение танка*/
 
 Tank.prototype.move = function () {
 
-    var tankItem = $('.tank');
+    var tankItem = $('.' + this.type_unit);
 
     // this.coords_x = parseInt(tankItem.attr('data-x'));
     // this.coords_y = parseInt(tankItem.attr('data-y'));
@@ -76,25 +93,27 @@ Tank.prototype.move = function () {
     var coords_y = parseInt(tankItem.attr('tank-y'));
 
 
-    switch (this.direction) {
-        case'x-':
-            coords_x -= 1;
-            break;
-        case'x+':
-            coords_x += 1;
-            break;
-        case'y-':
-            coords_y -= 1;
-            break;
-        case'y+':
-            coords_y += 1;
-            break;
-    }
+    // switch (this.direction) {
+    //     case'x-':
+    //         coords_x -= 1;
+    //         break;
+    //     case'x+':
+    //         coords_x += 1;
+    //         break;
+    //     case'y-':
+    //         coords_y -= 1;
+    //         break;
+    //     case'y+':
+    //         coords_y += 1;
+    //         break;
+    // }
+    //
+    // this.new_tankItem = $('.cell-' + coords_x + '-' + coords_y);
 
-    var new_tankItem = $('.cell-' + (coords_x) + '-' + (coords_y));
+    this.nextItem();
 
-    if (new_tankItem.hasClass('field_cell') === true) {
-        tankItem.removeClass('tank')
+    if (this.new_tankItem.hasClass('field_cell') === true) {
+        tankItem.removeClass(this.type_unit)
             .removeAttr('tank-x')
             .removeAttr('tank-y')
             .removeAttr('bullet-x')
@@ -102,13 +121,13 @@ Tank.prototype.move = function () {
             .removeAttr('bullet-id')
             .addClass('field_cell');
 
-        new_tankItem.addClass('tank')
-            .attr('tank-x', coords_x.toString())
-            .attr('tank-y', coords_y.toString())
-            .attr('bullet-x', coords_x.toString())
-            .attr('bullet-y', coords_y.toString())
+        this.new_tankItem.removeClass('field_cell')
+            .addClass(this.type_unit)
+            .attr('tank-x', this.coords_x.toString())
+            .attr('tank-y', this.coords_y.toString())
+            .attr('bullet-x', this.coords_x.toString())
+            .attr('bullet-y', this.coords_y.toString())
             .attr('bullet-id', this.bullet_id)
-            .removeClass('field_cell');
     }
 
 
@@ -132,7 +151,7 @@ Bullet.prototype.shot = function () {
         bulletItem = bulletItem.not('.tank')
     }
 
-    console.log(this.id);
+    // console.log(this.id);
 
     var bullet_coords_x = parseInt(bulletItem.attr('bullet-x'));
     var bullet_coords_y = parseInt(bulletItem.attr('bullet-y'));
@@ -164,9 +183,6 @@ Bullet.prototype.shot = function () {
         .removeClass('bullet')
         .addClass('field_cell');
 
-    // if (bulletItem.hasClass('tank')) {
-    //     bulletItem.attr('bullet-id', bullet_id);
-    // }
 
     if (newBulletItem.hasClass('field_cell')) {
         // console.log(bullet_id, this.id);
@@ -182,48 +198,7 @@ Bullet.prototype.shot = function () {
 };
 
 
-// Bullet.prototype.flight = function () {
-//
-// }
-
-/**Старт игры*/
-
-function startGame() {
-    // clearInterval(tank_timer);
-    // setInterval(move, TANK_SPEED);
-    // var bulletItem = $('[bullet-id = "' + bullet_id + '"]');
-    // console.log(bulletItem);
-}
 
 
-function changeDirection(e) {
-    switch (e.keyCode) {
-        case 37: // Клавиша влево
-            tank.direction = 'x-';
-            tank.move();
-            break;
-        case 38: // Клавиша вверх
-            tank.direction = 'y-';
-            tank.move();
-            break;
-        case 39: // Клавиша вправо
-            tank.direction = 'x+';
-            tank.move();
-            break;
-        case 40: // Клавиша вниз
-            tank.direction = 'y+';
-            tank.move();
-            break;
-        case 32: // Выстрел
-            var bullet = new Bullet(tank.bullet_id, tank.direction);
-            setInterval(function () {
-                bullet.shot();
-                console.log(tank.bullet_id);
 
-            }, BULLET_SPEED);
-            tank.bullet_id++;
-            break;
-    }
-}
 
-tank.location();

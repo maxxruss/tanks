@@ -16,8 +16,14 @@ td {
     background: lightgoldenrodyellow;
 }
 
-.tank {
+.tank, .enemy, .enemy1 {
     background: black;
+    transition: background 0.5s ease;
+
+}
+
+.enemy, .enemy1 {
+    background: red;
     transition: background 0.5s ease;
 
 }
