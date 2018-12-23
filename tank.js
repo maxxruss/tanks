@@ -1,7 +1,7 @@
 var FIELD_SIZE_X = 20;
 var FIELD_SIZE_Y = 20;
 var gameIsRunning = true;
-var direction = 'y-';
+// var direction = 'y-';
 var bullet_id = 1;
 var oldDirection = 'y-';
 var tank_timer;
@@ -30,13 +30,13 @@ for (var i = 0; i <= FIELD_SIZE_X; i++) {
 }
 
 
-function Tank(type_unit) {
+function Tank(type_unit, bullet_id) {
     this.type_unit = type_unit;
     this.coords_x = FIELD_SIZE_X / 2;
     this.coords_y = FIELD_SIZE_Y / 2;
-    // this.direction = 'y-';
+    this.direction = 'y-';
     // this.Olddirection = 'y-';
-    this.bullet_id = 1;
+    this.bullet_id = bullet_id;
 }
 
 /**Расположение танка*/
@@ -51,11 +51,10 @@ Tank.prototype.location = function () {
         .attr('tank-x', this.coords_x.toString())
         .attr('tank-y', this.coords_y.toString())
         .attr('bullet-x', this.coords_x.toString())
-        .attr('bullet-y', this.coords_y.toString())
-        .attr('bullet-id', this.bullet_id);
+        .attr('bullet-y', this.coords_y.toString());
+        // .attr('bullet-id', this.bullet_id);
 
-    this.nextItem();
-
+    this.checkItem();
 
 };
 
@@ -77,6 +76,31 @@ Tank.prototype.nextItem = function () {
     }
 
     this.new_tankItem = $('.cell-' + this.coords_x + '-' + this.coords_y);
+
+};
+
+Tank.prototype.checkItem = function () {
+
+    this.next_coords_x = this.coords_x;
+    this.next_coords_y = this.coords_y;
+
+    switch (this.direction) {
+        case'x-':
+            this.next_coords_x -= 1;
+            break;
+        case'x+':
+            this.next_coords_x += 1;
+            break;
+        case'y-':
+            this.next_coords_y -= 1;
+            break;
+        case'y+':
+            this.next_coords_y += 1;
+            break;
+    }
+
+    this.checkNextItem = $('.cell-' + this.next_coords_x + '-' + this.next_coords_y);
+
 };
 
 
@@ -86,31 +110,11 @@ Tank.prototype.move = function () {
 
     var tankItem = $('.' + this.type_unit);
 
-    // this.coords_x = parseInt(tankItem.attr('data-x'));
-    // this.coords_y = parseInt(tankItem.attr('data-y'));
-
-    var coords_x = parseInt(tankItem.attr('tank-x'));
-    var coords_y = parseInt(tankItem.attr('tank-y'));
-
-
-    // switch (this.direction) {
-    //     case'x-':
-    //         coords_x -= 1;
-    //         break;
-    //     case'x+':
-    //         coords_x += 1;
-    //         break;
-    //     case'y-':
-    //         coords_y -= 1;
-    //         break;
-    //     case'y+':
-    //         coords_y += 1;
-    //         break;
-    // }
-    //
-    // this.new_tankItem = $('.cell-' + coords_x + '-' + coords_y);
+    this.coords_x = parseInt(tankItem.attr('tank-x'));
+    this.coords_y = parseInt(tankItem.attr('tank-y'));
 
     this.nextItem();
+
 
     if (this.new_tankItem.hasClass('field_cell') === true) {
         tankItem.removeClass(this.type_unit)
@@ -118,7 +122,7 @@ Tank.prototype.move = function () {
             .removeAttr('tank-y')
             .removeAttr('bullet-x')
             .removeAttr('bullet-y')
-            .removeAttr('bullet-id')
+            // .removeAttr('bullet-id')
             .addClass('field_cell');
 
         this.new_tankItem.removeClass('field_cell')
@@ -127,37 +131,63 @@ Tank.prototype.move = function () {
             .attr('tank-y', this.coords_y.toString())
             .attr('bullet-x', this.coords_x.toString())
             .attr('bullet-y', this.coords_y.toString())
-            .attr('bullet-id', this.bullet_id)
+            // .attr('bullet-id', this.bullet_id)
     }
 
-
-    // this.oldDirection = this.direction;
+    this.checkItem();
 };
 
 /**Выстрел танка*/
 
-function Bullet(id, direction) {
+function Bullet(id, direction, type_unit) {
     this.id = id;
     this.direction = direction;
-    // console.log(this.id, this.direction)
+    this.type_unit = type_unit;
+    this.flight = true;
 }
 
 Bullet.prototype.shot = function () {
-    // console.log(this.id, this.direction);
+
+    var tankItem = $('.' + this.type_unit);
+
+    this.bullet_coords_x = parseInt(tankItem.attr('tank-x'));
+    this.bullet_coords_y = parseInt(tankItem.attr('tank-y'));
+
+    switch (this.direction) {
+        case'x-':
+            this.bullet_coords_x -= 1;
+            break;
+        case'x+':
+            this.bullet_coords_x += 1;
+            break;
+        case'y-':
+            this.bullet_coords_y -= 1;
+            break;
+        case'y+':
+            this.bullet_coords_y += 1;
+            break;
+    }
+
+    var newBulletItem = $('.cell-' + this.bullet_coords_x + '-' + this.bullet_coords_y);
+
+    newBulletItem.removeClass('field_cell')
+        .addClass('bullet')
+        .attr('bullet-x', this.bullet_coords_x.toString())
+        .attr('bullet-y', this.bullet_coords_y.toString())
+        .attr('bullet-id', this.id);
+
+};
+
+Bullet.prototype.flightBullet = function () {
 
     var bulletItem = $('[bullet-id = "' + this.id + '"]');
 
-    if (bulletItem.length > 1) {
-        bulletItem = bulletItem.not('.tank')
-    }
-
-    // console.log(this.id);
+    // if (bulletItem.length > 1) {
+    //     bulletItem = bulletItem.not('.tank')
+    // }
 
     var bullet_coords_x = parseInt(bulletItem.attr('bullet-x'));
     var bullet_coords_y = parseInt(bulletItem.attr('bullet-y'));
-
-
-    // this.direction = tank.direction;
 
     switch (this.direction) {
         case'x-':
@@ -185,17 +215,16 @@ Bullet.prototype.shot = function () {
 
 
     if (newBulletItem.hasClass('field_cell')) {
-        // console.log(bullet_id, this.id);
 
         newBulletItem.addClass('bullet')
             .removeClass('field_cell')
             .attr('bullet-x', bullet_coords_x.toString())
             .attr('bullet-y', bullet_coords_y.toString())
             .attr('bullet-id', this.id);
-        // oldDirectionBullet = directionBullet;
+    } else {
+        this.flight = false;
     }
-
-};
+}
 
 
 

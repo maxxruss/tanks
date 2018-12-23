@@ -1,14 +1,11 @@
-
-
 /**Старт игры*/
-var tank = new Tank('tank');
-tank.direction = 'y-';
+var tank = new Tank('tank', 1);
 
-var enemy = new Enemy('enemy');
-enemy.direction = 'y-';
+var enemy = new Enemy('enemy', 500);
 
-var enemy1 = new Enemy('enemy1');
-enemy1.direction = 'y-';
+var enemy1 = new Enemy('enemy1', 1000);
+var bulletEnemy1 = new Bullet(enemy1.bullet_id, enemy1.direction);
+
 
 startGame();
 
@@ -26,10 +23,21 @@ function startGame() {
     setInterval(function () {
         enemy.enemyMove();
         // enemy1.enemyMove();
-    }, ENEMY_SPEED)
+    }, ENEMY_SPEED);
+
+
+    setInterval(function () {
+        var bulletEnemy = new Bullet(enemy.bullet_id, enemy.direction, 'enemy');
+        bulletEnemy.shot();
+        setInterval(function () {
+            while (bulletEnemy.flight === true) {
+                bulletEnemy.flightBullet();
+            }
+        }, 2000)
+    }, BULLET_SPEED);
+    tank.bullet_id++;
 
 }
-
 
 
 function changeDirection(e) {
@@ -51,11 +59,10 @@ function changeDirection(e) {
             tank.move();
             break;
         case 32: // Выстрел
-            var bullet = new Bullet(tank.bullet_id, tank.direction);
+            var bullet = new Bullet(tank.bullet_id, tank.direction, 'tank');
+            bullet.shot();
             setInterval(function () {
-                bullet.shot();
-                console.log(tank.bullet_id);
-
+                bullet.flightBullet();
             }, BULLET_SPEED);
             tank.bullet_id++;
             break;
