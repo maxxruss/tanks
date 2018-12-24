@@ -28,13 +28,24 @@ function startGame() {
 
     setInterval(function () {
         var bulletEnemy = new Bullet(enemy.bullet_id, enemy.direction, 'enemy');
+
         bulletEnemy.shot();
-        setInterval(function () {
-            while (bulletEnemy.flight === true) {
+
+        var timer = setInterval(function () {
+
+
+            // while (bulletEnemy.flight === true) {
+
+
                 bulletEnemy.flightBullet();
-            }
-        }, 2000)
-    }, BULLET_SPEED);
+                if(bulletEnemy.flight ==! true) {
+                    clearInterval(timer);
+
+                }
+            // }
+        }, BULLET_SPEED);
+
+    }, 1000);
     tank.bullet_id++;
 
 }
