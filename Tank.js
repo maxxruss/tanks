@@ -52,7 +52,7 @@ Tank.prototype.location = function () {
         .attr('tank-y', this.coords_y.toString())
         .attr('bullet-x', this.coords_x.toString())
         .attr('bullet-y', this.coords_y.toString());
-        // .attr('bullet-id', this.bullet_id);
+    // .attr('bullet-id', this.bullet_id);
 
     this.checkItem();
 
@@ -110,6 +110,7 @@ Tank.prototype.move = function () {
 
     var tankItem = $('.' + this.type_unit);
 
+
     this.coords_x = parseInt(tankItem.attr('tank-x'));
     this.coords_y = parseInt(tankItem.attr('tank-y'));
 
@@ -122,7 +123,7 @@ Tank.prototype.move = function () {
             .removeAttr('tank-y')
             .removeAttr('bullet-x')
             .removeAttr('bullet-y')
-            // .removeAttr('bullet-id')
+            .css('transform', '')
             .addClass('field_cell');
 
         this.new_tankItem.removeClass('field_cell')
@@ -130,8 +131,22 @@ Tank.prototype.move = function () {
             .attr('tank-x', this.coords_x.toString())
             .attr('tank-y', this.coords_y.toString())
             .attr('bullet-x', this.coords_x.toString())
-            .attr('bullet-y', this.coords_y.toString())
-            // .attr('bullet-id', this.bullet_id)
+            .attr('bullet-y', this.coords_y.toString());
+
+        switch (this.direction) {
+            case'x-':
+                this.new_tankItem.css('transform', 'rotate(' + 0.75 + 'turn)');
+                break;
+            case'x+':
+                this.new_tankItem.css('transform', 'rotate(' + 0.25 + 'turn)');
+                break;
+            case'y-':
+                this.new_tankItem.css('transform', 'rotate(' + 1 + 'turn)');
+                break;
+            case'y+':
+                this.new_tankItem.css('transform', 'rotate(' + 0.50 + 'turn)');
+                break;
+        }
     }
 
     this.checkItem();

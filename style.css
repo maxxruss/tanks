@@ -10,20 +10,26 @@
 }
 
 td {
-    width: 20px;
-    height: 20px;
-    border: 1px solid black;
-    background: lightgoldenrodyellow;
+    width: 25px;
+    height: 25px;
+    /*border: 1px solid black;*/
+    background: black;
 }
 
-.tank, .enemy, .enemy1 {
-    background: black;
+.tank{
+    background-repeat: no-repeat;
+    background-image: url('image/xcbossk_gu0-1ughcwr2enfllz4.png');
+    /*transform: rotate(0.75turn);*/
+    background-size: cover;
     transition: background 0.5s ease;
 
 }
 
 .enemy, .enemy1 {
-    background: red;
+    background-image: url('image/enemy.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+
     transition: background 0.5s ease;
 
 }

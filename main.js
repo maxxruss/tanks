@@ -1,10 +1,7 @@
 /**Старт игры*/
 var tank = new Tank('tank', 1);
-
 var enemy = new Enemy('enemy', 500);
-
 var enemy1 = new Enemy('enemy1', 1000);
-var bulletEnemy1 = new Bullet(enemy1.bullet_id, enemy1.direction);
 
 
 startGame();
@@ -13,41 +10,38 @@ startGame();
 $(document).keydown(changeDirection);
 
 function startGame() {
-    // clearInterval(tank_timer);
-    // setInterval(move, TANK_SPEED);
-    // var bulletItem = $('[bullet-id = "' + bullet_id + '"]');
-    // console.log(bulletItem);
     tank.location();
     enemy.location();
-    // enemy1.location();
+    enemy1.location();
     setInterval(function () {
         enemy.enemyMove();
-        // enemy1.enemyMove();
+        enemy1.enemyMove();
     }, ENEMY_SPEED);
 
 
     setInterval(function () {
         var bulletEnemy = new Bullet(enemy.bullet_id, enemy.direction, 'enemy');
-
         bulletEnemy.shot();
-
-        var timer = setInterval(function () {
-
-
-            // while (bulletEnemy.flight === true) {
-
-
-                bulletEnemy.flightBullet();
-                if(bulletEnemy.flight ==! true) {
-                    clearInterval(timer);
-
-                }
-            // }
+        var timerEnemy = setInterval(function () {
+            bulletEnemy.flightBullet();
+            if (bulletEnemy.flight == !true) {
+                clearInterval(timerEnemy);
+            }
         }, BULLET_SPEED);
+    }, 1500);
+    // tank.bullet_id++;
 
-    }, 1000);
-    tank.bullet_id++;
-
+    setInterval(function () {
+        var bulletEnemy1 = new Bullet(enemy1.bullet_id, enemy1.direction, 'enemy1');
+        bulletEnemy1.shot();
+        var timerEnemy1 = setInterval(function () {
+            bulletEnemy1.flightBullet();
+            if (bulletEnemy1.flight == !true) {
+                clearInterval(timerEnemy1);
+            }
+        }, BULLET_SPEED);
+    }, 1600);
+    // tank.bullet_id++;
 }
 
 

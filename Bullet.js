@@ -1,4 +1,3 @@
-
 /**Выстрел танка*/
 
 function Bullet(id, direction, type_unit) {
@@ -9,6 +8,13 @@ function Bullet(id, direction, type_unit) {
 }
 
 Bullet.prototype.shot = function () {
+
+    if (this.type_unit === 'tank') {
+        var sound = new Audio();
+        sound.src = 'music/shot.mp3';
+        sound.play();
+    }
+
 
     var tankItem = $('.' + this.type_unit);
 
@@ -77,15 +83,22 @@ Bullet.prototype.flightBullet = function () {
 
 
     if (newBulletItem.hasClass('field_cell')) {
-
         newBulletItem.addClass('bullet')
             .removeClass('field_cell')
             .attr('bullet-x', bullet_coords_x.toString())
             .attr('bullet-y', bullet_coords_y.toString())
             .attr('bullet-id', this.id);
     } else {
+
         this.flight = false;
     }
+
+    // if (this.flight === false && this.type_unit === 'tank') {
+    //     var sound = new Audio();
+    //     sound.src = 'music/hit_wall.mp3';
+    //     // sound.play();
+    //     sound.pause();
+    // }
 }
 
 
