@@ -35,7 +35,7 @@ function Tank(type_unit, bullet_id) {
     this.coords_x = FIELD_SIZE_X / 2;
     this.coords_y = FIELD_SIZE_Y / 2;
     this.direction = 'y-';
-    // this.Olddirection = 'y-';
+    this.olddirection = 'y-';
     this.bullet_id = bullet_id;
 }
 
@@ -46,16 +46,16 @@ Tank.prototype.location = function () {
     var startPosition = $('.cell-' + this.coords_x + '-' + this.coords_y);
 
     startPosition.removeClass('field_cell');
+    this.getClassImage();
 
     startPosition.addClass(this.type_unit)
+        .addClass(this.classImage)
         .attr('tank-x', this.coords_x.toString())
         .attr('tank-y', this.coords_y.toString())
         .attr('bullet-x', this.coords_x.toString())
         .attr('bullet-y', this.coords_y.toString());
-    // .attr('bullet-id', this.bullet_id);
 
     this.checkItem();
-
 };
 
 Tank.prototype.nextItem = function () {
@@ -76,7 +76,6 @@ Tank.prototype.nextItem = function () {
     }
 
     this.new_tankItem = $('.cell-' + this.coords_x + '-' + this.coords_y);
-
 };
 
 Tank.prototype.checkItem = function () {
@@ -100,7 +99,43 @@ Tank.prototype.checkItem = function () {
     }
 
     this.checkNextItem = $('.cell-' + this.next_coords_x + '-' + this.next_coords_y);
+};
 
+Tank.prototype.getClassImage = function () {
+    if (this.type_unit === 'tank') {
+        switch (this.direction) {
+            case'x-':
+                this.classImage = 'tank_left';
+                break;
+            case'x+':
+                this.classImage = 'tank_right';
+                break;
+            case'y-':
+                this.classImage = 'tank_up';
+                break;
+            case'y+':
+                this.classImage = 'tank_down';
+                break;
+        }
+    }
+
+
+    if (this.type_unit === 'enemy' || this.type_unit === 'enemy1') {
+        switch (this.direction) {
+            case'x-':
+                this.classImage = 'enemy_left';
+                break;
+            case'x+':
+                this.classImage = 'enemy_right';
+                break;
+            case'y-':
+                this.classImage = 'enemy_up';
+                break;
+            case'y+':
+                this.classImage = 'enemy_down';
+                break;
+        }
+    }
 };
 
 
@@ -114,40 +149,39 @@ Tank.prototype.move = function () {
     this.coords_x = parseInt(tankItem.attr('tank-x'));
     this.coords_y = parseInt(tankItem.attr('tank-y'));
 
-    this.nextItem();
+    /**Если направление движения изменяется - сначала танк крутится на месте*/
 
+    if (this.olddirection !== this.direction) {
+        tankItem.removeClass(this.classImage);
+        this.getClassImage();
+        tankItem.addClass(this.classImage);
+    } else {
 
-    if (this.new_tankItem.hasClass('field_cell') === true) {
-        tankItem.removeClass(this.type_unit)
-            .removeAttr('tank-x')
-            .removeAttr('tank-y')
-            .removeAttr('bullet-x')
-            .removeAttr('bullet-y')
-            .css('transform', '')
-            .addClass('field_cell');
+        /**Если направление движения НЕ изменяется - танк движется дальше*/
 
-        this.new_tankItem.removeClass('field_cell')
-            .addClass(this.type_unit)
-            .attr('tank-x', this.coords_x.toString())
-            .attr('tank-y', this.coords_y.toString())
-            .attr('bullet-x', this.coords_x.toString())
-            .attr('bullet-y', this.coords_y.toString());
+        this.nextItem();
+        this.getClassImage();
 
-        switch (this.direction) {
-            case'x-':
-                this.new_tankItem.css('transform', 'rotate(' + 0.75 + 'turn)');
-                break;
-            case'x+':
-                this.new_tankItem.css('transform', 'rotate(' + 0.25 + 'turn)');
-                break;
-            case'y-':
-                this.new_tankItem.css('transform', 'rotate(' + 1 + 'turn)');
-                break;
-            case'y+':
-                this.new_tankItem.css('transform', 'rotate(' + 0.50 + 'turn)');
-                break;
+        if (this.new_tankItem.hasClass('field_cell') === true) {
+            tankItem.removeClass(this.type_unit)
+                .removeAttr('tank-x')
+                .removeAttr('tank-y')
+                .removeAttr('bullet-x')
+                .removeAttr('bullet-y')
+                .removeClass(this.classImage)
+                .addClass('field_cell');
+
+            this.new_tankItem.removeClass('field_cell')
+                .addClass(this.type_unit)
+                .attr('tank-x', this.coords_x.toString())
+                .attr('tank-y', this.coords_y.toString())
+                .attr('bullet-x', this.coords_x.toString())
+                .attr('bullet-y', this.coords_y.toString())
+                .addClass(this.classImage);
         }
     }
+    console.log(this.direction);
 
     this.checkItem();
+    this.olddirection = this.direction;
 };

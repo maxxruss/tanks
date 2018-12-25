@@ -18,30 +18,27 @@ function startGame() {
         enemy1.enemyMove();
     }, ENEMY_SPEED);
 
-
     setInterval(function () {
         var bulletEnemy = new Bullet(enemy.bullet_id, enemy.direction, 'enemy');
         bulletEnemy.shot();
         var timerEnemy = setInterval(function () {
             bulletEnemy.flightBullet();
-            if (bulletEnemy.flight == !true) {
+            if (!bulletEnemy.flight) {
                 clearInterval(timerEnemy);
             }
         }, BULLET_SPEED);
     }, 1500);
-    // tank.bullet_id++;
 
     setInterval(function () {
         var bulletEnemy1 = new Bullet(enemy1.bullet_id, enemy1.direction, 'enemy1');
         bulletEnemy1.shot();
         var timerEnemy1 = setInterval(function () {
             bulletEnemy1.flightBullet();
-            if (bulletEnemy1.flight == !true) {
+            if (!bulletEnemy1.flight) {
                 clearInterval(timerEnemy1);
             }
         }, BULLET_SPEED);
     }, 1600);
-    // tank.bullet_id++;
 }
 
 
