@@ -12,6 +12,7 @@ var directionBullet;
 var oldDirectionBullet;
 
 
+
 /**
  * Генерация игрового поля*/
 
@@ -58,6 +59,8 @@ Tank.prototype.location = function () {
     this.checkItem();
 };
 
+/**Получаем следующий по направлению элемент-ячейку*/
+
 Tank.prototype.nextItem = function () {
 
     switch (this.direction) {
@@ -77,6 +80,8 @@ Tank.prototype.nextItem = function () {
 
     this.new_tankItem = $('.cell-' + this.coords_x + '-' + this.coords_y);
 };
+
+/**Проверяем следующий по направлению элемент-ячейку*/
 
 Tank.prototype.checkItem = function () {
 
@@ -100,6 +105,8 @@ Tank.prototype.checkItem = function () {
 
     this.checkNextItem = $('.cell-' + this.next_coords_x + '-' + this.next_coords_y);
 };
+
+/**Определяем, какой класс присвоить юниту исходя из направления*/
 
 Tank.prototype.getClassImage = function () {
     if (this.type_unit === 'tank') {
@@ -138,13 +145,11 @@ Tank.prototype.getClassImage = function () {
     }
 };
 
-
 /**Движение танка*/
 
 Tank.prototype.move = function () {
 
     var tankItem = $('.' + this.type_unit);
-
 
     this.coords_x = parseInt(tankItem.attr('tank-x'));
     this.coords_y = parseInt(tankItem.attr('tank-y'));

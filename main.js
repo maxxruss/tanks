@@ -1,46 +1,16 @@
 /**Старт игры*/
 var tank = new Tank('tank', 1);
-var enemy = new Enemy('enemy', 500);
-var enemy1 = new Enemy('enemy1', 1000);
+var enemy = new Enemy();
 
-
-startGame();
 
 // $('.start_game').on('click', startGame);
 $(document).keydown(changeDirection);
 
 function startGame() {
     tank.location();
-    enemy.location();
-    enemy1.location();
-    setInterval(function () {
-        enemy.enemyMove();
-        enemy1.enemyMove();
-    }, ENEMY_SPEED);
-
-    setInterval(function () {
-        var bulletEnemy = new Bullet(enemy.bullet_id, enemy.direction, 'enemy');
-        bulletEnemy.shot();
-        var timerEnemy = setInterval(function () {
-            bulletEnemy.flightBullet();
-            if (!bulletEnemy.flight) {
-                clearInterval(timerEnemy);
-            }
-        }, BULLET_SPEED);
-    }, 1500);
-
-    setInterval(function () {
-        var bulletEnemy1 = new Bullet(enemy1.bullet_id, enemy1.direction, 'enemy1');
-        bulletEnemy1.shot();
-        var timerEnemy1 = setInterval(function () {
-            bulletEnemy1.flightBullet();
-            if (!bulletEnemy1.flight) {
-                clearInterval(timerEnemy1);
-            }
-        }, BULLET_SPEED);
-    }, 1600);
+    enemy.create('enemy', 500);
+    enemy.create('enemy1', 1000);
 }
-
 
 function changeDirection(e) {
     switch (e.keyCode) {
@@ -71,4 +41,5 @@ function changeDirection(e) {
     }
 }
 
+startGame();
 

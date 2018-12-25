@@ -20,3 +20,24 @@ Enemy.prototype.enemyMove = function () {
     }
 };
 
+Enemy.prototype.create = function createEnemy(enemy_name, id_bullet) {
+
+    var enemy = new Enemy(enemy_name, id_bullet);
+    enemy.location();
+
+    setInterval(function () {
+        enemy.enemyMove();
+    }, ENEMY_SPEED);
+
+    setInterval(function () {
+        var bulletEnemy = new Bullet(enemy.bullet_id, enemy.direction, enemy_name);
+        bulletEnemy.shot();
+        var timerEnemy = setInterval(function () {
+            bulletEnemy.flightBullet();
+            if (!bulletEnemy.flight) {
+                clearInterval(timerEnemy);
+            }
+        }, BULLET_SPEED);
+    }, 1500);
+};
+
