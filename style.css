@@ -16,6 +16,18 @@ td {
     background: black;
 }
 
+/*animation-name: myAnimation;*/
+/*animation-duration: 2s;*/
+
+@keyframes myAnimation {
+    from {
+        left: 0;
+    }
+    to {
+        left: 100%;
+    }
+}
+
 /*.first::before {*/
 /*content: "";*/
 /*float: left;*/
@@ -40,6 +52,7 @@ td {
     width: 30px;
     height: 30px;
     background: url('image/sprites.png') 0 0 no-repeat;
+
 }
 
 .tank_down {
@@ -73,9 +86,9 @@ td {
 }
 
 /*.enemy, .enemy1 {*/
-    /*width: 30px;*/
-    /*height: 30px;*/
-    /*background: url('image/sprites.png') no-repeat;*/
+/*width: 30px;*/
+/*height: 30px;*/
+/*background: url('image/sprites.png') no-repeat;*/
 
 /*}*/
 

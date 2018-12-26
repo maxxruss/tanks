@@ -1,5 +1,5 @@
 /**Старт игры*/
-var tank = new Tank('tank', 1);
+var tank = new Tank('tank', 'tank', 1);
 var enemy = new Enemy();
 
 
@@ -8,8 +8,12 @@ $(document).keydown(changeDirection);
 
 function startGame() {
     tank.location();
-    enemy.create('enemy', 500);
-    enemy.create('enemy1', 1000);
+
+    for(var i = 1;i<enemyCount;i++) {
+        enemy.create('enemy', 'enemy_' + i, i*100);
+    }
+
+    // enemy.create('enemy1', 1000);
 }
 
 function changeDirection(e) {

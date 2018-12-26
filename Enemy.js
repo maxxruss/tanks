@@ -1,5 +1,5 @@
-function Enemy(type_unit, bullet_id) {
-    Tank.apply(this, [type_unit, bullet_id]);
+function Enemy(type, type_unit, bullet_id) {
+    Tank.apply(this, [type, type_unit, bullet_id]);
     this.coords_x = Math.floor(Math.random() * FIELD_SIZE_X);
     this.coords_y = Math.floor(Math.random() * FIELD_SIZE_Y / 2);
 }
@@ -20,11 +20,11 @@ Enemy.prototype.enemyMove = function () {
     }
 };
 
-Enemy.prototype.create = function createEnemy(enemy_name, id_bullet) {
+Enemy.prototype.create = function createEnemy(type, enemy_name, id_bullet) {
 
-    var enemy = new Enemy(enemy_name, id_bullet);
+    var enemy = new Enemy(type, enemy_name, id_bullet);
     enemy.location();
-
+    //
     setInterval(function () {
         enemy.enemyMove();
     }, ENEMY_SPEED);

@@ -7,11 +7,10 @@ var oldDirection = 'y-';
 var tank_timer;
 var TANK_SPEED = 300;
 var BULLET_SPEED = 50;
-var ENEMY_SPEED = 2000;
+var ENEMY_SPEED = 800;
 var directionBullet;
 var oldDirectionBullet;
-
-
+var enemyCount = 14;
 
 /**
  * Генерация игрового поля*/
@@ -31,13 +30,14 @@ for (var i = 0; i <= FIELD_SIZE_X; i++) {
 }
 
 
-function Tank(type_unit, bullet_id) {
+function Tank(type, type_unit, bullet_id) {
     this.type_unit = type_unit;
     this.coords_x = FIELD_SIZE_X / 2;
     this.coords_y = FIELD_SIZE_Y / 2;
     this.direction = 'y-';
     this.olddirection = 'y-';
     this.bullet_id = bullet_id;
+    this.type = type;
 }
 
 /**Расположение танка*/
@@ -47,21 +47,25 @@ Tank.prototype.location = function () {
     var startPosition = $('.cell-' + this.coords_x + '-' + this.coords_y);
 
     startPosition.removeClass('field_cell');
-    this.getClassImage();
+    this.classImage = this.getClassImage();
 
-    startPosition.addClass(this.type_unit)
+    this.checkItem();
+
+    startPosition.addClass(this.type)
+        .addClass(this.type_unit)
         .addClass(this.classImage)
         .attr('tank-x', this.coords_x.toString())
         .attr('tank-y', this.coords_y.toString())
         .attr('bullet-x', this.coords_x.toString())
         .attr('bullet-y', this.coords_y.toString());
 
-    this.checkItem();
+
+    console.log(this.type)
 };
 
 /**Получаем следующий по направлению элемент-ячейку*/
 
-Tank.prototype.nextItem = function () {
+Tank.prototype.getNextItem = function () {
 
     switch (this.direction) {
         case'x-':
@@ -78,7 +82,7 @@ Tank.prototype.nextItem = function () {
             break;
     }
 
-    this.new_tankItem = $('.cell-' + this.coords_x + '-' + this.coords_y);
+    return $('.cell-' + this.coords_x + '-' + this.coords_y);
 };
 
 /**Проверяем следующий по направлению элемент-ячейку*/
@@ -109,38 +113,30 @@ Tank.prototype.checkItem = function () {
 /**Определяем, какой класс присвоить юниту исходя из направления*/
 
 Tank.prototype.getClassImage = function () {
-    if (this.type_unit === 'tank') {
+    if (this.type === 'tank') {
         switch (this.direction) {
             case'x-':
-                this.classImage = 'tank_left';
-                break;
+                return 'tank_left';
             case'x+':
-                this.classImage = 'tank_right';
-                break;
+                return 'tank_right';
             case'y-':
-                this.classImage = 'tank_up';
-                break;
+                return 'tank_up';
             case'y+':
-                this.classImage = 'tank_down';
-                break;
+                return 'tank_down';
         }
     }
 
 
-    if (this.type_unit === 'enemy' || this.type_unit === 'enemy1') {
+    if (this.type === 'enemy') {
         switch (this.direction) {
             case'x-':
-                this.classImage = 'enemy_left';
-                break;
+                return 'enemy_left';
             case'x+':
-                this.classImage = 'enemy_right';
-                break;
+                return 'enemy_right';
             case'y-':
-                this.classImage = 'enemy_up';
-                break;
+                return 'enemy_up';
             case'y+':
-                this.classImage = 'enemy_down';
-                break;
+                return 'enemy_down';
         }
     }
 };
@@ -158,17 +154,20 @@ Tank.prototype.move = function () {
 
     if (this.olddirection !== this.direction) {
         tankItem.removeClass(this.classImage);
-        this.getClassImage();
+
+        this.classImage = this.getClassImage();
+
         tankItem.addClass(this.classImage);
     } else {
 
         /**Если направление движения НЕ изменяется - танк движется дальше*/
 
-        this.nextItem();
-        this.getClassImage();
+        this.new_tankItem = this.getNextItem();
+        // this.getClassImage();
 
         if (this.new_tankItem.hasClass('field_cell') === true) {
-            tankItem.removeClass(this.type_unit)
+            tankItem.removeClass(this.type)
+                .removeClass(this.type_unit)
                 .removeAttr('tank-x')
                 .removeAttr('tank-y')
                 .removeAttr('bullet-x')
@@ -177,6 +176,7 @@ Tank.prototype.move = function () {
                 .addClass('field_cell');
 
             this.new_tankItem.removeClass('field_cell')
+                .addClass(this.type)
                 .addClass(this.type_unit)
                 .attr('tank-x', this.coords_x.toString())
                 .attr('tank-y', this.coords_y.toString())
@@ -185,7 +185,6 @@ Tank.prototype.move = function () {
                 .addClass(this.classImage);
         }
     }
-    console.log(this.direction);
 
     this.checkItem();
     this.olddirection = this.direction;
