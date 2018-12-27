@@ -1,19 +1,20 @@
 /**Старт игры*/
 var tank = new Tank('tank', 'tank', 1);
 var enemy = new Enemy();
+var animation = new Animation();
+
 
 
 // $('.start_game').on('click', startGame);
 $(document).keydown(changeDirection);
 
 function startGame() {
-    tank.location();
-
-    for(var i = 1;i<enemyCount;i++) {
+    animation.appearance($('.cell-' + tank.coords_x + '-' + tank.coords_y));
+    tank.location()
+    //
+    for(var i = 1;i<=enemyCount;i++) {
         enemy.create('enemy', 'enemy_' + i, i*100);
     }
-
-    // enemy.create('enemy1', 1000);
 }
 
 function changeDirection(e) {

@@ -10,7 +10,7 @@ var BULLET_SPEED = 50;
 var ENEMY_SPEED = 800;
 var directionBullet;
 var oldDirectionBullet;
-var enemyCount = 14;
+var enemyCount = 0;
 
 /**
  * Генерация игрового поля*/
@@ -44,22 +44,25 @@ function Tank(type, type_unit, bullet_id) {
 
 Tank.prototype.location = function () {
 
-    var startPosition = $('.cell-' + this.coords_x + '-' + this.coords_y);
+    this.startPosition = $('.cell-' + this.coords_x + '-' + this.coords_y);
 
-    startPosition.removeClass('field_cell');
+    this.startPosition.removeClass('field_cell');
     this.classImage = this.getClassImage();
 
     this.checkItem();
 
-    startPosition.addClass(this.type)
+    // var Animation = new Animation();
+    //
+    // Animation.appearance(startPosition);
+
+
+    this.startPosition.addClass(this.type)
         .addClass(this.type_unit)
         .addClass(this.classImage)
         .attr('tank-x', this.coords_x.toString())
         .attr('tank-y', this.coords_y.toString())
         .attr('bullet-x', this.coords_x.toString())
         .attr('bullet-y', this.coords_y.toString());
-
-
     console.log(this.type)
 };
 

@@ -14,27 +14,9 @@ td {
     height: 30px;
     /*border: 1px solid black;*/
     background: black;
+    position: relative;
 }
 
-/*animation-name: myAnimation;*/
-/*animation-duration: 2s;*/
-
-@keyframes myAnimation {
-    from {
-        left: 0;
-    }
-    to {
-        left: 100%;
-    }
-}
-
-/*.first::before {*/
-/*content: "";*/
-/*float: left;*/
-/*width: 50px;*/
-/*height: 50px;*/
-/*background: url("images/sprites.png") 0 0 no-repeat;*/
-/*}*/
 
 .tank_left {
     width: 30px;
@@ -85,24 +67,17 @@ td {
     background: url('image/sprites.png') -360px 0 no-repeat;
 }
 
-/*.enemy, .enemy1 {*/
-/*width: 30px;*/
-/*height: 30px;*/
-/*background: url('image/sprites.png') no-repeat;*/
-
-/*}*/
-
 .start_game {
     width: 100px;
     height: 30px;
     align-items: center;
 }
 
-.bullet {
-    width: 30px;
-    height: 30px;
-    background: black;
-}
+/*.bullet {*/
+    /*width: 30px;*/
+    /*height: 30px;*/
+    /*background: black;*/
+/*}*/
 
 .bullet_left {
     width: 15px;
@@ -130,4 +105,180 @@ td {
     height: 15px;
     margin: 7.5px;
     background: url('image/sprites.png') -632px -185px no-repeat;
+}
+
+.exp_enemy_1 {
+    width: 60px;
+    height: 60px;
+    z-index: 999;
+    position: absolute;
+    left: -15px;
+    top: -15px;    background: url('image/sprites_transparent.png') -570px -240px no-repeat;;
+
+}
+
+.exp_enemy_2 {
+    width: 60px;
+    height: 60px;
+    z-index: 999;
+    position: absolute;
+    left: -15px;
+    top: -15px;
+    background: url('image/sprites_transparent.png') -630px -240px no-repeat;
+}
+
+.appear_1 {
+    width: 30px;
+    height: 30px;
+    background: url('image/sprites.png') -481px -179px no-repeat;
+}
+
+.appear_2 {
+    width: 30px;
+    height: 30px;
+    background: url('image/sprites.png') -510px -179px no-repeat;
+}
+
+.appear_3 {
+    width: 30px;
+    height: 30px;
+    background: url('image/sprites.png') -540px -179px no-repeat;
+}
+
+.appear_4 {
+    width: 30px;
+    height: 30px;
+    background: url('image/sprites.png') -570px -179px no-repeat;
+}
+
+.hit_wall_up_1 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    top: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -479px -239px no-repeat;
+}
+
+.hit_wall_up_2 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    top: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -509px -239px no-repeat;
+}
+
+.hit_wall_up_3 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    top: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -539px -239px no-repeat;
+}
+
+.hit_wall_down_1 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    bottom: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -479px -239px no-repeat;
+}
+
+.hit_wall_down_2 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    bottom: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -509px -239px no-repeat;
+}
+
+.hit_wall_down_3 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    bottom: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -539px -239px no-repeat;
+}
+
+.hit_wall_left_1 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    left: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -479px -239px no-repeat;
+}
+
+.hit_wall_left_2 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    left: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -509px -239px no-repeat;
+}
+
+.hit_wall_left_3 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    left: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -539px -239px no-repeat;
+}
+
+.hit_wall_right_1 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    right: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -479px -239px no-repeat;
+}
+
+.hit_wall_right_2 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    right: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -509px -239px no-repeat;
+}
+
+.hit_wall_right_3 {
+    width: 30px;
+    height: 30px;
+    z-index: 999;
+    right: -15px;
+    position: absolute;
+    background: url('image/sprites_transparent.png') -539px -239px no-repeat;
+}
+
+.armor {
+    width: 30px;
+    height: 30px;
+    background: url('image/sprites_transparent.png') -480px -30px no-repeat;
+}
+
+.water {
+    width: 30px;
+    height: 30px;
+    background: url('image/sprites_transparent.png') -480px -60px no-repeat;
+}
+
+.forest {
+    width: 30px;
+    height: 30px;
+    background: url('image/sprites_transparent.png') -510px -60px no-repeat;
+}
+
+.brick {
+    width: 30px;
+    height: 30px;
+    background: url('image/sprites_transparent.png') -480px 0 no-repeat;
 }

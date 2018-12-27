@@ -97,7 +97,6 @@ Bullet.prototype.getNextItem = function () {
         this.changeImage();
 
     } else if (this.new_item.hasClass('enemy')) {
-        console.log('ok')
         this.new_item.removeClass()
             .addClass('cell-' + this.coords_x + '-' + this.coords_y)
             .addClass('field_cell')
@@ -106,11 +105,13 @@ Bullet.prototype.getNextItem = function () {
             .removeAttr('tank-x')
             .removeAttr('tank-y');
 
+        animation.explosion(this.new_item);
 
         enemy.create('enemy', 'enemy_' + ++enemyCount, enemyCount*100);
         enemy.location();
 
     } else {
+        animation.hitWall(this.new_item, this.direction);
         this.flight = false;
     }
 };
