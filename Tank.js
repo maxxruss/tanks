@@ -1,33 +1,6 @@
 var FIELD_SIZE_X = 20;
 var FIELD_SIZE_Y = 20;
 var gameIsRunning = true;
-// var direction = 'y-';
-var bullet_id = 1;
-var oldDirection = 'y-';
-var tank_timer;
-var TANK_SPEED = 300;
-var BULLET_SPEED = 50;
-var ENEMY_SPEED = 800;
-var directionBullet;
-var oldDirectionBullet;
-var enemyCount = 0;
-
-/**
- * Генерация игрового поля*/
-
-var table = $('.game_field');
-for (var i = 0; i <= FIELD_SIZE_X; i++) {
-    var row = $('<tr />', {
-        class: 'row-' + i
-    });
-    for (var j = 0; j <= FIELD_SIZE_Y; j++) {
-        var sell = $('<td />', {
-            class: 'cell-' + j + '-' + i + ' field_cell'
-        });
-        row.append(sell);
-    }
-    table.append(row);
-}
 
 
 function Tank(type, type_unit, bullet_id) {
