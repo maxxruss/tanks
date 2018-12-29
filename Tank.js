@@ -11,37 +11,30 @@ function Tank(type, type_unit, bullet_id) {
     this.olddirection = 'y-';
     this.bullet_id = bullet_id;
     this.type = type;
+    this.unitImage = $('<div />');
 }
 
 /**Расположение танка*/
 
 Tank.prototype.location = function () {
 
-    this.startPosition = $('.cell-' + this.coords_x + '-' + this.coords_y);
+    this.new_item = $('.cell-' + this.coords_x + '-' + this.coords_y);
 
-    this.startPosition.removeClass('field_cell');
-    this.classImage = this.getClassImage();
+    this.changeImage();
 
-    this.checkItem();
-
-    // var Animation = new Animation();
-    //
-    // Animation.appearance(startPosition);
-
-
-    this.startPosition.addClass(this.type)
+    this.new_item.removeClass('field_cell')
+        .addClass(this.type)
         .addClass(this.type_unit)
-        .addClass(this.classImage)
         .attr('tank-x', this.coords_x.toString())
         .attr('tank-y', this.coords_y.toString())
         .attr('bullet-x', this.coords_x.toString())
         .attr('bullet-y', this.coords_y.toString());
-    console.log(this.type)
+    // console.log(this.type + '-' + this.new_item)
 };
 
 /**Получаем следующий по направлению элемент-ячейку*/
 
-Tank.prototype.getNextItem = function () {
+Tank.prototype.getNewItem = function () {
 
     switch (this.direction) {
         case'x-':
@@ -86,35 +79,32 @@ Tank.prototype.checkItem = function () {
     this.checkNextItem = $('.cell-' + this.next_coords_x + '-' + this.next_coords_y);
 };
 
-/**Определяем, какой класс присвоить юниту исходя из направления*/
 
-Tank.prototype.getClassImage = function () {
-    if (this.type === 'tank') {
-        switch (this.direction) {
-            case'x-':
-                return 'tank_left';
-            case'x+':
-                return 'tank_right';
-            case'y-':
-                return 'tank_up';
-            case'y+':
-                return 'tank_down';
-        }
+
+Tank.prototype.changeImage = function () {
+
+    this.unitImage.removeClass();
+
+    switch (this.direction) {
+        case'x-':
+            this.unitImage.addClass(this.type + '_left')
+                // .addClass(this.type);
+            break;
+        case'x+':
+            this.unitImage.addClass(this.type + '_right')
+                // .addClass(this.type);
+            break;
+        case'y-':
+            this.unitImage.addClass(this.type + '_up')
+                // .addClass(this.type);
+            break;
+        case'y+':
+            this.unitImage.addClass(this.type + '_down')
+                // .addClass(this.type);
+            break;
     }
 
-
-    if (this.type === 'enemy') {
-        switch (this.direction) {
-            case'x-':
-                return 'enemy_left';
-            case'x+':
-                return 'enemy_right';
-            case'y-':
-                return 'enemy_up';
-            case'y+':
-                return 'enemy_down';
-        }
-    }
+    this.unitImage.appendTo(this.new_item);
 };
 
 /**Движение танка*/
@@ -129,36 +119,38 @@ Tank.prototype.move = function () {
     /**Если направление движения изменяется - сначала танк крутится на месте*/
 
     if (this.olddirection !== this.direction) {
-        tankItem.removeClass(this.classImage);
-
-        this.classImage = this.getClassImage();
-
-        tankItem.addClass(this.classImage);
+        // tankItem.removeClass(this.classImage);
+        //
+        // this.classImage = this.getClassImage();
+        //
+        // tankItem.addClass(this.classImage);
+        this.changeImage();
     } else {
 
         /**Если направление движения НЕ изменяется - танк движется дальше*/
+        this.checkItem();
 
-        this.new_tankItem = this.getNextItem();
-        // this.getClassImage();
+        if (this.checkNextItem.hasClass('field_cell') || this.checkNextItem.hasClass('water')) {
+            this.new_item = this.getNewItem();
+            this.new_item.removeClass('field_cell')
+                .addClass(this.type)
+                .addClass(this.type_unit)
+                .attr('tank-x', this.coords_x.toString())
+                .attr('tank-y', this.coords_y.toString())
+                .attr('bullet-x', this.coords_x.toString())
+                .attr('bullet-y', this.coords_y.toString());
 
-        if (this.new_tankItem.hasClass('field_cell') === true) {
+            this.changeImage();
+
             tankItem.removeClass(this.type)
                 .removeClass(this.type_unit)
                 .removeAttr('tank-x')
                 .removeAttr('tank-y')
                 .removeAttr('bullet-x')
                 .removeAttr('bullet-y')
-                .removeClass(this.classImage)
-                .addClass('field_cell');
-
-            this.new_tankItem.removeClass('field_cell')
-                .addClass(this.type)
-                .addClass(this.type_unit)
-                .attr('tank-x', this.coords_x.toString())
-                .attr('tank-y', this.coords_y.toString())
-                .attr('bullet-x', this.coords_x.toString())
-                .attr('bullet-y', this.coords_y.toString())
-                .addClass(this.classImage);
+                .addClass(tankItem.hasClass('water') ? '' : 'field_cell')
+                .find('.' + this.type_unit)
+                .remove()
         }
     }
 

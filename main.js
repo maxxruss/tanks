@@ -19,13 +19,19 @@ var enemyCount = 1;
  * Генерация игрового поля*/
 
 var table = $('.game_field');
-for (var i = 0; i <= FIELD_SIZE_X; i++) {
+for (var i = 0; i <= FIELD_SIZE_X + 2; i++) {
     var row = $('<tr />', {
         class: 'row-' + i
     });
-    for (var j = 0; j <= FIELD_SIZE_Y; j++) {
+    for (var j = 0; j <= FIELD_SIZE_Y + 2; j++) {
+
+        if (i === 0 || i === FIELD_SIZE_Y + 2 || j === 0 || j === FIELD_SIZE_Y + 2) {
+            var cell_class = ' outer_perimeter'
+        } else {
+            cell_class = ' field_cell';
+        }
         var sell = $('<td />', {
-            class: 'cell-' + j + '-' + i + ' field_cell'
+            class: 'cell-' + j + '-' + i + cell_class
         });
         row.append(sell);
     }
@@ -58,22 +64,45 @@ let_model.brick(brick_arr);
 
 
 var forest_arr = [
-    {"x": 15, "y": 15},
-    {"x": 16, "y": 15},
-    {"x": 15, "y": 16}
+    {"x": 0, "y": 1},
+    {"x": 1, "y": 1},
+    {"x": 2, "y": 1},
+    {"x": 3, "y": 1},
+    {"x": 4, "y": 1},
+    {"x": 5, "y": 1},
+    {"x": 6, "y": 1},
+    {"x": 7, "y": 1},
+    {"x": 8, "y": 1},
+    {"x": 9, "y": 1},
+    {"x": 10, "y": 1},
+    {"x": 11, "y": 1},
+    {"x": 12, "y": 1},
+    {"x": 13, "y": 1},
+    {"x": 14, "y": 1},
+    {"x": 15, "y": 1},
+    {"x": 16, "y": 1},
+    {"x": 17, "y": 1},
+    {"x": 18, "y": 1},
+    {"x": 19, "y": 1},
+    {"x": 20, "y": 1}
+
 ];
 
-let_model.forest(forest_arr);
-
+// let_model.forest(forest_arr);
 
 
 // $('.start_game').on('click', startGame);
 $(document).keydown(changeDirection);
 
 function startGame() {
+
     animation.appearance($('.cell-' + tank.coords_x + '-' + tank.coords_y));
-    tank.location();
-    //
+
+    function tank_location() {
+        tank.location();
+    }
+    setTimeout(tank_location, 2150);
+
     for (var i = 1; i <= enemyCount; i++) {
         enemy.create('enemy', 'enemy_' + i, i * 100);
     }

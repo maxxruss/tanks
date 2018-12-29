@@ -24,9 +24,14 @@ Let.prototype.water = function(arr_coords) {
 
 Let.prototype.forest = function(arr_coords) {
     for(var key in arr_coords) {
+
+        var forest_image = $('<div />', {
+            class: 'forest'
+        });
+
         var item = $('.cell-' + arr_coords[key].x + '-' + arr_coords[key].y);
-        item.removeClass('field_cell');
-        item.addClass('forest');
+
+        forest_image.appendTo(item);
     }};
 
 Let.prototype.brick = function(arr_coords) {

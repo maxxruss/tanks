@@ -17,54 +17,58 @@ td {
     position: relative;
 }
 
+.outer_perimeter {
+    background: gray;
+}
+
 
 .tank_left {
     width: 30px;
     height: 30px;
-    background: url('image/sprites.png') -60px 0 no-repeat;
+    background: url('image/sprites_transparent.png') -60px 0 no-repeat;
 }
 
 .tank_right {
     width: 30px;
     height: 30px;
-    background: url('image/sprites.png') -180px 0 no-repeat;
+    background: url('image/sprites_transparent.png') -180px 0 no-repeat;
 }
 
 .tank_up {
     width: 30px;
     height: 30px;
-    background: url('image/sprites.png') 0 0 no-repeat;
+    background: url('image/sprites_transparent.png') 0 0 no-repeat;
 
 }
 
 .tank_down {
     width: 30px;
     height: 30px;
-    background: url('image/sprites.png') -120px 0 no-repeat;
+    background: url('image/sprites_transparent.png') -120px 0 no-repeat;
 }
 
 .enemy_left {
     width: 30px;
     height: 30px;
-    background: url('image/sprites.png') -300px 0 no-repeat;
+    background: url('image/sprites_transparent.png') -300px 0 no-repeat;
 }
 
 .enemy_right {
     width: 30px;
     height: 30px;
-    background: url('image/sprites.png') -420px 0 no-repeat;
+    background: url('image/sprites_transparent.png') -420px 0 no-repeat;
 }
 
 .enemy_up {
     width: 30px;
     height: 30px;
-    background: url('image/sprites.png') -240px 0 no-repeat;
+    background: url('image/sprites_transparent.png') -240px 0 no-repeat;
 }
 
 .enemy_down {
     width: 30px;
     height: 30px;
-    background: url('image/sprites.png') -360px 0 no-repeat;
+    background: url('image/sprites_transparent.png') -360px 0 no-repeat;
 }
 
 .start_game {
@@ -83,34 +87,34 @@ td {
     width: 15px;
     height: 15px;
     margin: 7.5px;
-    background: url('image/sprites.png') -615px -185px no-repeat;
+    background: url('image/sprites_transparent.png') -615px -185px no-repeat;
 }
 
 .bullet_right {
     width: 15px;
     height: 15px;
     margin: 7.5px;
-    background: url('image/sprites.png') -645px -185px no-repeat;
+    background: url('image/sprites_transparent.png') -645px -185px no-repeat;
 }
 
 .bullet_up {
     width: 15px;
     height: 15px;
     margin: 7.5px;
-    background: url('image/sprites.png') -602px -185px no-repeat;
+    background: url('image/sprites_transparent.png') -602px -185px no-repeat;
 }
 
 .bullet_down {
     width: 15px;
     height: 15px;
     margin: 7.5px;
-    background: url('image/sprites.png') -632px -185px no-repeat;
+    background: url('image/sprites_transparent.png') -632px -185px no-repeat;
 }
 
 .exp_enemy_1 {
     width: 60px;
     height: 60px;
-    z-index: 999;
+    z-index: 10;
     position: absolute;
     left: -15px;
     top: -15px;    background: url('image/sprites_transparent.png') -570px -240px no-repeat;;
@@ -120,7 +124,7 @@ td {
 .exp_enemy_2 {
     width: 60px;
     height: 60px;
-    z-index: 999;
+    z-index: 10;
     position: absolute;
     left: -15px;
     top: -15px;
@@ -154,7 +158,7 @@ td {
 .hit_wall_up_1 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     top: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -479px -239px no-repeat;
@@ -163,7 +167,7 @@ td {
 .hit_wall_up_2 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     top: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -509px -239px no-repeat;
@@ -172,7 +176,7 @@ td {
 .hit_wall_up_3 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     top: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -539px -239px no-repeat;
@@ -181,7 +185,7 @@ td {
 .hit_wall_down_1 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     bottom: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -479px -239px no-repeat;
@@ -190,7 +194,7 @@ td {
 .hit_wall_down_2 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     bottom: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -509px -239px no-repeat;
@@ -199,7 +203,7 @@ td {
 .hit_wall_down_3 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     bottom: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -539px -239px no-repeat;
@@ -208,7 +212,7 @@ td {
 .hit_wall_left_1 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     left: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -479px -239px no-repeat;
@@ -217,7 +221,7 @@ td {
 .hit_wall_left_2 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     left: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -509px -239px no-repeat;
@@ -226,7 +230,7 @@ td {
 .hit_wall_left_3 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     left: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -539px -239px no-repeat;
@@ -235,7 +239,7 @@ td {
 .hit_wall_right_1 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     right: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -479px -239px no-repeat;
@@ -244,7 +248,7 @@ td {
 .hit_wall_right_2 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     right: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -509px -239px no-repeat;
@@ -253,7 +257,7 @@ td {
 .hit_wall_right_3 {
     width: 30px;
     height: 30px;
-    z-index: 999;
+    z-index: 10;
     right: -15px;
     position: absolute;
     background: url('image/sprites_transparent.png') -539px -239px no-repeat;
@@ -274,6 +278,8 @@ td {
 .forest {
     width: 30px;
     height: 30px;
+    position: absolute;
+    z-index: 11;
     background: url('image/sprites_transparent.png') -510px -60px no-repeat;
 }
 

@@ -1,17 +1,25 @@
 function Enemy(type, type_unit, bullet_id) {
     Tank.apply(this, [type, type_unit, bullet_id]);
-    this.coords_x = Math.floor(Math.random() * FIELD_SIZE_X);
-    this.coords_y = Math.floor(Math.random() * FIELD_SIZE_Y / 2);
+    this.coords_x = Math.floor(Math.random() * (FIELD_SIZE_X-1) + 1);
+    this.coords_y = 1;
 }
 
 
 Enemy.prototype = Object.create(Tank.prototype);
 Enemy.prototype.constructor = Enemy;
 
+// Enemy.prototype.enemyLocation = function() {
+//
+//
+//     this.location();
+// };
+
 Enemy.prototype.enemyMove = function () {
 
+    this.checkItem();
+
     /**Проверка следующей по движению клетки*/
-    if (this.checkNextItem.hasClass('field_cell')) {
+    if (this.checkNextItem.hasClass('field_cell')||this.checkNextItem.hasClass('water')) {
         this.move();
     } else {
 
@@ -30,13 +38,16 @@ Enemy.prototype.create = function createEnemy(type, enemy_name, id_bullet) {
     /**Запускаем анимацию перед появлением*/
     animation.appearance($('.cell-' + enemy.coords_x + '-' + enemy.coords_y));
 
-    /**Танк появляется в начальной точке*/
-    enemy.location();
+
 
     /**Танк начинает двигаться только после окончания анимации*/
     setTimeout(begin_move_shot, 2150);
 
     function begin_move_shot() {
+
+
+        /**Танк появляется в начальной точке*/
+        enemy.location();
 
         /**Задаем скорость передвижения танка*/
         setInterval(function () {

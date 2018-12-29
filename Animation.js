@@ -55,6 +55,9 @@ Animation.prototype.appearance = function (unit) {
 };
 
 Animation.prototype.explosion = function (enemy_item) {
+    // enemy_item.find('div')
+    //     .remove()
+
     var exp_view = $('<div />', {
         class: 'exp_enemy_1'
     });
@@ -65,12 +68,14 @@ Animation.prototype.explosion = function (enemy_item) {
     }
 
     function exp_empty() {
-        enemy_item.empty()
+        enemy_item.find('.exp_enemy_2')
+            .remove()
     }
 
 
     setTimeout(exp_1, 150);
     setTimeout(exp_empty, 300);
+
 
     exp_view.appendTo(enemy_item);
 
@@ -80,6 +85,7 @@ Animation.prototype.explosion = function (enemy_item) {
 };
 
 Animation.prototype.hitWall = function (unit, direction) {
+    // console.log('анимация hit')
 
     switch (direction) {
         case'x-':
