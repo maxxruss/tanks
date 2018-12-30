@@ -9,7 +9,7 @@ var oldDirection = 'y-';
 var tank_timer;
 var TANK_SPEED = 300;
 var BULLET_SPEED = 50;
-var ENEMY_SPEED = 800;
+var ENEMY_SPEED = 2800;
 var directionBullet;
 var oldDirectionBullet;
 var enemyCount = 1;
@@ -92,16 +92,33 @@ var forest_arr = [
 
 
 // $('.start_game').on('click', startGame);
-$(document).keydown(changeDirection);
 
-function startGame() {
+
+function tank_create() {
+
 
     animation.appearance($('.cell-' + tank.coords_x + '-' + tank.coords_y));
 
     function tank_location() {
         tank.location();
     }
+
+
+    function tank_keydown() {
+        $(document).keydown(changeDirection);
+    }
+
     setTimeout(tank_location, 2150);
+    setTimeout(tank_keydown, 2150);
+
+}
+
+function startGame() {
+
+    tank_create();
+
+
+
 
     for (var i = 1; i <= enemyCount; i++) {
         enemy.create('enemy', 'enemy_' + i, i * 100);

@@ -59,20 +59,43 @@ Bullet.prototype.getNextItem = function () {
         this.changeImage();
 
     } else if (this.new_item.hasClass('enemy')) {
-        console.log(this.new_item)
+
+        this.new_item.find('.enemy')
+            .remove();
+
+
         this.new_item.removeClass()
             .addClass('cell-' + this.coords_x + '-' + this.coords_y)
             .addClass('field_cell')
             .removeAttr('bullet-x')
             .removeAttr('bullet-y')
             .removeAttr('tank-x')
-            .removeAttr('tank-y')
-            // .empty();
+            .removeAttr('tank-y');
 
         animation.explosion(this.new_item);
 
+
         enemy.create('enemy', 'enemy_' + ++enemyCount, enemyCount * 100);
         enemy.location();
+
+    } else if (this.new_item.hasClass('tank')) {
+
+
+        this.new_item.find('.tank')
+            .remove();
+
+        this.new_item.removeClass()
+            .addClass('cell-' + this.coords_x + '-' + this.coords_y)
+            .addClass('field_cell')
+            .removeAttr('bullet-x')
+            .removeAttr('bullet-y')
+            .removeAttr('tank-x')
+            .removeAttr('tank-y');
+
+
+        animation.explosion(this.new_item);
+
+        tank_create();
 
     } else if (this.new_item.hasClass('armor')) {
         animation.hitWall(this.new_item, this.direction);

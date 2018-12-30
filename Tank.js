@@ -11,7 +11,7 @@ function Tank(type, type_unit, bullet_id) {
     this.olddirection = 'y-';
     this.bullet_id = bullet_id;
     this.type = type;
-    this.unitImage = $('<div />');
+
 }
 
 /**Расположение танка*/
@@ -83,35 +83,49 @@ Tank.prototype.checkItem = function () {
 
 Tank.prototype.changeImage = function () {
 
-    this.unitImage.removeClass();
+    var item = $('.cell-' + this.coords_x + '-' + this.coords_y);
+
+    item.find('.' + this.type)
+        .remove();
+
+
+    this.unitImage = $('<div />', {
+        class: this.type
+    });
+
+    // unitImage.removeClass()
+
+    // addClass(this.type);
 
     switch (this.direction) {
         case'x-':
-            this.unitImage.addClass(this.type + '_left')
-                // .addClass(this.type);
-            break;
+            this.unitImage.addClass(this.type + '_left');
+;            break;
         case'x+':
-            this.unitImage.addClass(this.type + '_right')
-                // .addClass(this.type);
-            break;
+            this.unitImage.addClass(this.type + '_right');
+;            break;
         case'y-':
-            this.unitImage.addClass(this.type + '_up')
-                // .addClass(this.type);
-            break;
+            this.unitImage.addClass(this.type + '_up');
+;            break;
         case'y+':
-            this.unitImage.addClass(this.type + '_down')
-                // .addClass(this.type);
-            break;
+            this.unitImage.addClass(this.type + '_down');
+;            break;
     }
 
     this.unitImage.appendTo(this.new_item);
+    console.log('this.new_item - ');
+    console.log(this.new_item);
 };
 
 /**Движение танка*/
 
 Tank.prototype.move = function () {
 
+    console.log('this.type_unit -' + this.type_unit );
+
     var tankItem = $('.' + this.type_unit);
+
+    console.log('tankItem - ' + tankItem);
 
     this.coords_x = parseInt(tankItem.attr('tank-x'));
     this.coords_y = parseInt(tankItem.attr('tank-y'));
@@ -119,19 +133,32 @@ Tank.prototype.move = function () {
     /**Если направление движения изменяется - сначала танк крутится на месте*/
 
     if (this.olddirection !== this.direction) {
-        // tankItem.removeClass(this.classImage);
-        //
-        // this.classImage = this.getClassImage();
-        //
-        // tankItem.addClass(this.classImage);
-        this.changeImage();
-    } else {
 
+        this.changeImage();
+
+    } else {
         /**Если направление движения НЕ изменяется - танк движется дальше*/
         this.checkItem();
 
         if (this.checkNextItem.hasClass('field_cell') || this.checkNextItem.hasClass('water')) {
+
+
+            /**Находим и удаляем потомка - вставленную картинку така*/
+
+            tankItem.find('.' + this.type)
+                .remove();
+
+            tankItem.removeClass(this.type)
+                .removeClass(this.type_unit)
+                .removeAttr('tank-x')
+                .removeAttr('tank-y')
+                .removeAttr('bullet-x')
+                .removeAttr('bullet-y')
+                .addClass(tankItem.hasClass('water') ? '' : 'field_cell');
+
+
             this.new_item = this.getNewItem();
+
             this.new_item.removeClass('field_cell')
                 .addClass(this.type)
                 .addClass(this.type_unit)
@@ -142,15 +169,8 @@ Tank.prototype.move = function () {
 
             this.changeImage();
 
-            tankItem.removeClass(this.type)
-                .removeClass(this.type_unit)
-                .removeAttr('tank-x')
-                .removeAttr('tank-y')
-                .removeAttr('bullet-x')
-                .removeAttr('bullet-y')
-                .addClass(tankItem.hasClass('water') ? '' : 'field_cell')
-                .find('.' + this.type_unit)
-                .remove()
+
+
         }
     }
 
