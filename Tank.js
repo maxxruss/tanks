@@ -5,8 +5,8 @@ var gameIsRunning = true;
 
 function Tank(type, type_unit, bullet_id) {
     this.type_unit = type_unit;
-    this.coords_x = FIELD_SIZE_X / 2;
-    this.coords_y = FIELD_SIZE_Y / 2;
+    this.coords_x = 7;
+    this.coords_y = 21;
     this.direction = 'y-';
     this.olddirection = 'y-';
     this.bullet_id = bullet_id;
@@ -18,18 +18,20 @@ function Tank(type, type_unit, bullet_id) {
 
 Tank.prototype.location = function () {
 
-    this.new_item = $('.cell-' + this.coords_x + '-' + this.coords_y);
+    var startCoords = $('.cell-' + this.coords_x + '-' + this.coords_y);
+ // console.log(this.type_unit);
+ // console.log(startCoords);
 
-    this.changeImage();
-
-    this.new_item.removeClass('field_cell')
+    startCoords.removeClass('field_cell')
         .addClass(this.type)
         .addClass(this.type_unit)
         .attr('tank-x', this.coords_x.toString())
         .attr('tank-y', this.coords_y.toString())
         .attr('bullet-x', this.coords_x.toString())
         .attr('bullet-y', this.coords_y.toString());
-    // console.log(this.type + '-' + this.new_item)
+
+    this.changeImage();
+
 };
 
 /**Получаем следующий по направлению элемент-ячейку*/
@@ -80,7 +82,6 @@ Tank.prototype.checkItem = function () {
 };
 
 
-
 Tank.prototype.changeImage = function () {
 
     var item = $('.cell-' + this.coords_x + '-' + this.coords_y);
@@ -93,39 +94,34 @@ Tank.prototype.changeImage = function () {
         class: this.type
     });
 
-    // unitImage.removeClass()
-
-    // addClass(this.type);
 
     switch (this.direction) {
         case'x-':
             this.unitImage.addClass(this.type + '_left');
-;            break;
+            break;
         case'x+':
             this.unitImage.addClass(this.type + '_right');
-;            break;
+            break;
         case'y-':
             this.unitImage.addClass(this.type + '_up');
-;            break;
+            break;
         case'y+':
             this.unitImage.addClass(this.type + '_down');
-;            break;
+            break;
     }
 
-    this.unitImage.appendTo(this.new_item);
-    console.log('this.new_item - ');
-    console.log(this.new_item);
+    if (item.hasClass(this.type)) {
+        this.unitImage.appendTo(item);
+    }
+
+
 };
 
 /**Движение танка*/
 
 Tank.prototype.move = function () {
 
-    console.log('this.type_unit -' + this.type_unit );
-
     var tankItem = $('.' + this.type_unit);
-
-    console.log('tankItem - ' + tankItem);
 
     this.coords_x = parseInt(tankItem.attr('tank-x'));
     this.coords_y = parseInt(tankItem.attr('tank-y'));
@@ -168,7 +164,6 @@ Tank.prototype.move = function () {
                 .attr('bullet-y', this.coords_y.toString());
 
             this.changeImage();
-
 
 
         }

@@ -5,14 +5,69 @@
     justify-content: center;
 }
 
+.eagle {
+    width: 30px;
+    height: 30px;
+    z-index: 2;
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    background: url('image/sprites_transparent.png') -571px -61px no-repeat;
+}
+
+.eagle_dead {
+    width: 30px;
+    height: 30px;
+    z-index: 2;
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    background: url('image/sprites_transparent.png') -600px -61px no-repeat;
+}
+
 .game_field {
 
+}
+
+.game_over {
+    width: 60px;
+    height: 60px;
+    background: url('image/sprites_transparent.png') -541px -343px no-repeat;
+    position: relative;
+    animation-name: myAnimation;
+    animation-duration: 5s;
+}
+
+@keyframes myAnimation {
+    0% {
+        left: 0;
+        top: 0;
+    }
+    20% {
+        left: 20%;
+        top: 200px;
+    }
+    40% {
+        left: 40%;
+        top: 300px;
+    }
+    60% {
+        left: 60%;
+        top: 150px;
+    }
+    80% {
+        left: 80%;
+        top: 200px;
+    }
+    100% {
+        left: 100%;
+        top: 50px;
+    }
 }
 
 td {
     width: 30px;
     height: 30px;
-    /*border: 1px solid black;*/
     background: black;
     position: relative;
 }
@@ -117,7 +172,7 @@ td {
     z-index: 10;
     position: absolute;
     left: -15px;
-    top: -15px;    background: url('image/sprites_transparent.png') -570px -240px no-repeat;;
+    top: -15px;    background: url('image/sprites_transparent.png') -570px -240px no-repeat;
 
 }
 

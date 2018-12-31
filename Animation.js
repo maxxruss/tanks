@@ -55,8 +55,6 @@ Animation.prototype.appearance = function (unit) {
 };
 
 Animation.prototype.explosion = function (enemy_item) {
-    // enemy_item.find('div')
-    //     .remove()
 
     var exp_view = $('<div />', {
         class: 'exp_enemy_1'

@@ -1,22 +1,25 @@
 /**Старт игры*/
-var tank = new Tank('tank', 'tank', 1);
 var enemy = new Enemy();
 var animation = new Animation();
-var let_model = new Let();
-// var direction = 'y-';
-var bullet_id = 1;
-var oldDirection = 'y-';
-var tank_timer;
-var TANK_SPEED = 300;
+var tank = new Tank('tank', 'tank', 1);
+
+// // var direction = 'y-';
+// var bullet_id = 1;
+// var oldDirection = 'y-';
+// var tank_timer;
+// var TANK_SPEED = 300;
 var BULLET_SPEED = 50;
-var ENEMY_SPEED = 2800;
-var directionBullet;
-var oldDirectionBullet;
-var enemyCount = 1;
+var ENEMY_SPEED = 400;
+// var directionBullet;
+// var oldDirectionBullet;
+var enemyCount = 3;
+var tankCount = 1;
+var enemy_unit_timer = [];
+var enemy_bullet_timer = [];
 
 
-/**
- * Генерация игрового поля*/
+
+/**Генерация игрового поля*/
 
 var table = $('.game_field');
 for (var i = 0; i <= FIELD_SIZE_X + 2; i++) {
@@ -38,94 +41,39 @@ for (var i = 0; i <= FIELD_SIZE_X + 2; i++) {
     table.append(row);
 }
 
-var armor_arr = [
-    {"x": 5, "y": 15},
-    {"x": 6, "y": 15},
-    {"x": 5, "y": 16}
-];
-let_model.armor(armor_arr);
+/**Орел в штабе*/
+var cell_general_1 = $('.cell-10-20');
 
+cell_general_1.removeClass('field_cell')
+    .addClass('general');
 
-var water_arr = [
-    {"x": 7, "y": 15},
-    {"x": 8, "y": 15},
-    {"x": 7, "y": 14}
-];
-let_model.water(water_arr);
+var cell_general_2 = $('.cell-11-20');
 
+cell_general_2.removeClass('field_cell')
+    .addClass('general');
 
-var brick_arr = [
-    {"x": 5, "y": 18},
-    {"x": 6, "y": 18},
-    {"x": 5, "y": 19}
-];
+var cell_general_3 = $('.cell-10-21');
 
-let_model.brick(brick_arr);
+cell_general_3.removeClass('field_cell')
+    .addClass('general');
 
+var cell_general_4 = $('.cell-11-21');
 
-var forest_arr = [
-    {"x": 0, "y": 1},
-    {"x": 1, "y": 1},
-    {"x": 2, "y": 1},
-    {"x": 3, "y": 1},
-    {"x": 4, "y": 1},
-    {"x": 5, "y": 1},
-    {"x": 6, "y": 1},
-    {"x": 7, "y": 1},
-    {"x": 8, "y": 1},
-    {"x": 9, "y": 1},
-    {"x": 10, "y": 1},
-    {"x": 11, "y": 1},
-    {"x": 12, "y": 1},
-    {"x": 13, "y": 1},
-    {"x": 14, "y": 1},
-    {"x": 15, "y": 1},
-    {"x": 16, "y": 1},
-    {"x": 17, "y": 1},
-    {"x": 18, "y": 1},
-    {"x": 19, "y": 1},
-    {"x": 20, "y": 1}
+cell_general_4.removeClass('field_cell')
+    .addClass('general');
 
-];
+var unitImage = $('<div />', {
+    class: 'eagle'
+});
 
-// let_model.forest(forest_arr);
+unitImage.appendTo(cell_general_3);
 
 
 // $('.start_game').on('click', startGame);
-
-
-function tank_create() {
-
-
-    animation.appearance($('.cell-' + tank.coords_x + '-' + tank.coords_y));
-
-    function tank_location() {
-        tank.location();
-    }
-
-
-    function tank_keydown() {
-        $(document).keydown(changeDirection);
-    }
-
-    setTimeout(tank_location, 2150);
-    setTimeout(tank_keydown, 2150);
-
-}
-
-function startGame() {
-
-    tank_create();
-
-
-
-
-    for (var i = 1; i <= enemyCount; i++) {
-        enemy.create('enemy', 'enemy_' + i, i * 100);
-    }
-}
+$(document).on('keydown', changeDirection);
 
 function changeDirection(e) {
+
     switch (e.keyCode) {
         case 37: // Клавиша влево
             tank.direction = 'x-';
@@ -144,15 +92,96 @@ function changeDirection(e) {
             tank.move();
             break;
         case 32: // Выстрел
-            var bullet = new Bullet(tank.bullet_id, tank.direction, 'tank');
+            var bullet = new Bullet(tank.bullet_id, tank.direction, tank.type, tank.type_unit);
             bullet.shot();
             setInterval(function () {
                 bullet.flightBullet();
             }, BULLET_SPEED);
             tank.bullet_id++;
+            console.log(tank.type_unit);
             break;
     }
 }
 
+
+function create_tank(type, type_unit, id_bullet) {
+
+    var tank = new Tank(type, type_unit, id_bullet);
+
+    animation.appearance($('.cell-' + tank.coords_x + '-' + tank.coords_y));
+
+    function tank_location() {
+        tank.location();
+    }
+
+    // console.log(type, type_unit, id_bullet)
+
+    /**Танк появляется только после окончания анимации*/
+
+    setTimeout(tank_location, 2150);
+}
+
+
+function create_enemy(type, type_unit, id_bullet) {
+    /**Создаем объект вражеского танка*/
+    var enemy = new Enemy(type, type_unit, id_bullet);
+
+    /**Запускаем анимацию перед появлением*/
+    animation.appearance($('.cell-' + enemy.coords_x + '-' + enemy.coords_y));
+
+
+    /**Танк начинает двигаться только после окончания анимации*/
+    setTimeout(begin_move_shot, 2150);
+
+    function begin_move_shot() {
+        console.log(enemy.type);
+
+
+        /**Танк появляется в начальной точке*/
+        enemy.location();
+
+        /**Задаем скорость передвижения танка*/
+        enemy_unit_timer.push(setInterval(function () {
+            enemy.enemyMove();
+        }, ENEMY_SPEED));
+
+        enemy_bullet_timer.push(setInterval(function () {
+
+            /**Создаем модель снаряда*/
+            var bulletEnemy = new Bullet(enemy.bullet_id, enemy.direction, type, type_unit);
+
+            /**Выстрел танка - сняряд вылетел из танка*/
+            bulletEnemy.shot();
+            var timerEnemy = setInterval(function () {
+
+                /**Задаем скорость движения снаряда*/
+                bulletEnemy.flightBullet();
+                if (!bulletEnemy.flight) {
+                    clearInterval(timerEnemy);
+                }
+            }, BULLET_SPEED);
+        }, 1500));
+    }
+}
+
+
+function startGame() {
+
+    for (var i = 1; i <= enemyCount; i++) {
+        create_enemy('enemy', 'enemy_' + i, i * 500);
+    }
+
+    create_tank('tank', 'tank_' + tankCount, 100 * tankCount++);
+}
+
+/**
+ * Функция завершения игры
+ */
+function game_over() {
+    enemy_unit_timer.forEach(clearInterval);
+    enemy_bullet_timer.forEach(clearInterval)
+}
+
 startGame();
+
 
