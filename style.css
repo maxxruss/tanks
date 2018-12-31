@@ -32,37 +32,65 @@
 .game_over {
     width: 60px;
     height: 60px;
+    z-index: 25;
     background: url('image/sprites_transparent.png') -541px -343px no-repeat;
     position: relative;
+    left: 38%;
+    top: -400px;
     animation-name: myAnimation;
     animation-duration: 5s;
 }
 
 @keyframes myAnimation {
     0% {
-        left: 0;
-        top: 0;
-    }
-    20% {
-        left: 20%;
-        top: 200px;
-    }
-    40% {
-        left: 40%;
-        top: 300px;
-    }
-    60% {
-        left: 60%;
-        top: 150px;
-    }
-    80% {
-        left: 80%;
-        top: 200px;
+        left: 38%;
+        top: -31px;
     }
     100% {
-        left: 100%;
-        top: 50px;
+        left: 38%;
+        top: -400px;
     }
+}
+
+.you_win {
+    width: 250px;
+    height: 60px;
+    z-index: 25;
+    position: relative;
+    left: 31%;
+    top: -400px;
+    animation-name: myAnimationWin;
+    animation-duration: 5s;
+    color: red;
+    font-size: 45px;
+    font-weight: 900;
+}
+
+@keyframes myAnimationWin {
+    0% {
+        left: 31%;
+        top: -42px;
+    }
+    100% {
+        left: 31%;
+        top: -400px;
+    }
+}
+
+
+.lastEnemyImage {
+    width: 15px;
+    height: 13px;
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    background: url('image/sprites.png') -601px -361px no-repeat;
+}
+
+.lastEnemy {
+    position: relative;
+    background: gray;
+
 }
 
 td {
@@ -74,6 +102,8 @@ td {
 
 .outer_perimeter {
     background: gray;
+    position: relative;
+
 }
 
 
@@ -133,9 +163,9 @@ td {
 }
 
 /*.bullet {*/
-    /*width: 30px;*/
-    /*height: 30px;*/
-    /*background: black;*/
+/*width: 30px;*/
+/*height: 30px;*/
+/*background: black;*/
 /*}*/
 
 .bullet_left {
@@ -172,7 +202,8 @@ td {
     z-index: 10;
     position: absolute;
     left: -15px;
-    top: -15px;    background: url('image/sprites_transparent.png') -570px -240px no-repeat;
+    top: -15px;
+    background: url('image/sprites_transparent.png') -570px -240px no-repeat;
 
 }
 

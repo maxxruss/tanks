@@ -2,21 +2,23 @@
 var enemy = new Enemy();
 var animation = new Animation();
 var tank = new Tank('tank', 'tank', 1);
-
 // // var direction = 'y-';
 // var bullet_id = 1;
 // var oldDirection = 'y-';
 // var tank_timer;
 // var TANK_SPEED = 300;
 var BULLET_SPEED = 50;
-var ENEMY_SPEED = 400;
+var ENEMY_SPEED = 1400;
 // var directionBullet;
 // var oldDirectionBullet;
 var enemyCount = 3;
 var tankCount = 1;
 var enemy_unit_timer = [];
 var enemy_bullet_timer = [];
-
+var FIELD_SIZE_X = 20;
+var FIELD_SIZE_Y = 20;
+var gameIsRunning = true;
+var arrLastEnemy = [];
 
 
 /**Генерация игрового поля*/
@@ -26,9 +28,9 @@ for (var i = 0; i <= FIELD_SIZE_X + 2; i++) {
     var row = $('<tr />', {
         class: 'row-' + i
     });
-    for (var j = 0; j <= FIELD_SIZE_Y + 2; j++) {
+    for (var j = 0; j <= FIELD_SIZE_Y + 5; j++) {
 
-        if (i === 0 || i === FIELD_SIZE_Y + 2 || j === 0 || j === FIELD_SIZE_Y + 2) {
+        if (i === 0 || i === FIELD_SIZE_X + 2 || j === 0 || j >= FIELD_SIZE_Y + 2) {
             var cell_class = ' outer_perimeter'
         } else {
             cell_class = ' field_cell';
@@ -40,6 +42,31 @@ for (var i = 0; i <= FIELD_SIZE_X + 2; i++) {
     }
     table.append(row);
 }
+
+/**Прорисовка оставшихся врагов в правой панели*/
+
+for (var x = 23; x <= 24; x++) {
+    for (var y = 2; y <= 8; y++) {
+        var cell = $('.cell-' + x + '-' + y);
+        cell.removeClass('outer_perimeter')
+            .addClass('lastEnemy');
+        arrLastEnemy.push(cell);
+    }
+}
+
+function render_last_enemy() {
+    $('.lastEnemyImage').remove();
+
+    arrLastEnemy.forEach(function (item, i, array) {
+        var lastEnemyImage = $('<div />', {
+            class: 'lastEnemyImage'
+        });
+        lastEnemyImage.appendTo(item);
+    })
+
+}
+
+render_last_enemy();
 
 /**Орел в штабе*/
 var cell_general_1 = $('.cell-10-20');
@@ -167,6 +194,10 @@ function create_enemy(type, type_unit, id_bullet) {
 
 function startGame() {
 
+    var sound = new Audio();
+    sound.src = 'music/title.mp3';
+    sound.play();
+
     for (var i = 1; i <= enemyCount; i++) {
         create_enemy('enemy', 'enemy_' + i, i * 500);
     }
@@ -178,8 +209,28 @@ function startGame() {
  * Функция завершения игры
  */
 function game_over() {
+    gameIsRunning = false;
     enemy_unit_timer.forEach(clearInterval);
-    enemy_bullet_timer.forEach(clearInterval)
+    enemy_bullet_timer.forEach(clearInterval);
+
+    var game_over = $('<div />', {
+        class: 'game_over'
+    });
+
+    game_over.appendTo(table);
+}
+
+function you_win() {
+    gameIsRunning = false;
+    enemy_unit_timer.forEach(clearInterval);
+    enemy_bullet_timer.forEach(clearInterval);
+
+    var you_win = $('<div />', {
+        class: 'you_win',
+        text: 'You win!'
+    });
+
+    you_win.appendTo(table);
 }
 
 startGame();

@@ -1,6 +1,4 @@
-var FIELD_SIZE_X = 20;
-var FIELD_SIZE_Y = 20;
-var gameIsRunning = true;
+
 
 
 function Tank(type, type_unit, bullet_id) {

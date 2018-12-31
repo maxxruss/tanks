@@ -75,8 +75,19 @@ Bullet.prototype.action = function () {
 
         animation.explosion(this.new_item);
 
+        if (arrLastEnemy.length > 1) {
+            arrLastEnemy.pop();
+            render_last_enemy();
+        } else if (arrLastEnemy.length === 1) {
+            arrLastEnemy.pop();
+            render_last_enemy();
+            you_win();
+        }
 
-        create_enemy('enemy', 'enemy_' + ++enemyCount, enemyCount * 100);
+
+        if (gameIsRunning === true) {
+            create_enemy('enemy', 'enemy_' + ++enemyCount, enemyCount * 100);
+        }
 
     } else if (this.new_item.hasClass('tank')) {
 
