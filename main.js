@@ -20,7 +20,6 @@ var FIELD_SIZE_Y = 20;
 var gameIsRunning = true;
 var arrLastEnemy = [];
 
-
 /**Генерация игрового поля*/
 
 var table = $('.game_field');
