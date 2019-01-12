@@ -1,14 +1,17 @@
+/**Модель танка противника*/
+
 function Enemy(type, type_unit, bullet_id) {
     Tank.apply(this, [type, type_unit, bullet_id]);
     this.coords_x = Math.floor(Math.random() * (FIELD_SIZE_X-1) + 1);
     this.coords_y = 1;
 }
 
-
 Enemy.prototype = Object.create(Tank.prototype);
 Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.enemyMove = function () {
+
+    /**Переопределен метод движения танка*/
 
     this.checkItem();
 

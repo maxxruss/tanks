@@ -2,15 +2,8 @@
 var enemy = new Enemy();
 var animation = new Animation();
 var tank = new Tank('tank', 'tank', 1);
-// // var direction = 'y-';
-// var bullet_id = 1;
-// var oldDirection = 'y-';
-// var tank_timer;
-// var TANK_SPEED = 300;
 var BULLET_SPEED = 50;
 var ENEMY_SPEED = 1400;
-// var directionBullet;
-// var oldDirectionBullet;
 var enemyCount = 3;
 var tankCount = 1;
 var enemy_unit_timer = [];
@@ -42,7 +35,7 @@ for (var i = 0; i <= FIELD_SIZE_X + 2; i++) {
     table.append(row);
 }
 
-/**Прорисовка оставшихся врагов в правой панели*/
+/**Прорисовка оставшихся врагов на правой панели*/
 
 for (var x = 23; x <= 24; x++) {
     for (var y = 2; y <= 8; y++) {
@@ -62,7 +55,6 @@ function render_last_enemy() {
         });
         lastEnemyImage.appendTo(item);
     })
-
 }
 
 render_last_enemy();
@@ -94,12 +86,9 @@ var unitImage = $('<div />', {
 
 unitImage.appendTo(cell_general_3);
 
-
-// $('.start_game').on('click', startGame);
 $(document).on('keydown', changeDirection);
 
 function changeDirection(e) {
-
     switch (e.keyCode) {
         case 37: // Клавиша влево
             tank.direction = 'x-';
@@ -131,19 +120,14 @@ function changeDirection(e) {
 
 
 function create_tank(type, type_unit, id_bullet) {
-
     var tank = new Tank(type, type_unit, id_bullet);
-
     animation.appearance($('.cell-' + tank.coords_x + '-' + tank.coords_y));
 
     function tank_location() {
         tank.location();
     }
 
-    // console.log(type, type_unit, id_bullet)
-
     /**Танк появляется только после окончания анимации*/
-
     setTimeout(tank_location, 2150);
 }
 
@@ -155,13 +139,11 @@ function create_enemy(type, type_unit, id_bullet) {
     /**Запускаем анимацию перед появлением*/
     animation.appearance($('.cell-' + enemy.coords_x + '-' + enemy.coords_y));
 
-
     /**Танк начинает двигаться только после окончания анимации*/
     setTimeout(begin_move_shot, 2150);
 
     function begin_move_shot() {
         console.log(enemy.type);
-
 
         /**Танк появляется в начальной точке*/
         enemy.location();
@@ -190,7 +172,6 @@ function create_enemy(type, type_unit, id_bullet) {
     }
 }
 
-
 function startGame() {
 
     var sound = new Audio();
@@ -200,22 +181,18 @@ function startGame() {
     for (var i = 1; i <= enemyCount; i++) {
         create_enemy('enemy', 'enemy_' + i, i * 500);
     }
-
     create_tank('tank', 'tank_' + tankCount, 100 * tankCount++);
 }
 
-/**
- * Функция завершения игры
- */
+/**Функция завершения игры*/
+
 function game_over() {
     gameIsRunning = false;
     enemy_unit_timer.forEach(clearInterval);
     enemy_bullet_timer.forEach(clearInterval);
-
     var game_over = $('<div />', {
         class: 'game_over'
     });
-
     game_over.appendTo(table);
 }
 
@@ -228,7 +205,6 @@ function you_win() {
         class: 'you_win',
         text: 'You win!'
     });
-
     you_win.appendTo(table);
 }
 

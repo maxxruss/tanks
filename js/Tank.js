@@ -1,5 +1,4 @@
-
-
+/**Модель танка*/
 
 function Tank(type, type_unit, bullet_id) {
     this.type_unit = type_unit;
@@ -9,16 +8,12 @@ function Tank(type, type_unit, bullet_id) {
     this.olddirection = 'y-';
     this.bullet_id = bullet_id;
     this.type = type;
-
 }
 
-/**Расположение танка*/
+/**Первоначальное расположение танка*/
 
 Tank.prototype.location = function () {
-
     var startCoords = $('.cell-' + this.coords_x + '-' + this.coords_y);
- // console.log(this.type_unit);
- // console.log(startCoords);
 
     startCoords.removeClass('field_cell')
         .addClass(this.type)
@@ -27,9 +22,7 @@ Tank.prototype.location = function () {
         .attr('tank-y', this.coords_y.toString())
         .attr('bullet-x', this.coords_x.toString())
         .attr('bullet-y', this.coords_y.toString());
-
     this.changeImage();
-
 };
 
 /**Получаем следующий по направлению элемент-ячейку*/
@@ -50,7 +43,6 @@ Tank.prototype.getNewItem = function () {
             this.coords_y += 1;
             break;
     }
-
     return $('.cell-' + this.coords_x + '-' + this.coords_y);
 };
 
@@ -81,17 +73,12 @@ Tank.prototype.checkItem = function () {
 
 
 Tank.prototype.changeImage = function () {
-
     var item = $('.cell-' + this.coords_x + '-' + this.coords_y);
-
     item.find('.' + this.type)
         .remove();
-
-
     this.unitImage = $('<div />', {
         class: this.type
     });
-
 
     switch (this.direction) {
         case'x-':
@@ -111,8 +98,6 @@ Tank.prototype.changeImage = function () {
     if (item.hasClass(this.type)) {
         this.unitImage.appendTo(item);
     }
-
-
 };
 
 /**Движение танка*/
@@ -136,7 +121,6 @@ Tank.prototype.move = function () {
 
         if (this.checkNextItem.hasClass('field_cell') || this.checkNextItem.hasClass('water')) {
 
-
             /**Находим и удаляем потомка - вставленную картинку така*/
 
             tankItem.find('.' + this.type)
@@ -150,7 +134,6 @@ Tank.prototype.move = function () {
                 .removeAttr('bullet-y')
                 .addClass(tankItem.hasClass('water') ? '' : 'field_cell');
 
-
             this.new_item = this.getNewItem();
 
             this.new_item.removeClass('field_cell')
@@ -160,13 +143,9 @@ Tank.prototype.move = function () {
                 .attr('tank-y', this.coords_y.toString())
                 .attr('bullet-x', this.coords_x.toString())
                 .attr('bullet-y', this.coords_y.toString());
-
             this.changeImage();
-
-
         }
     }
-
     this.checkItem();
     this.olddirection = this.direction;
 };

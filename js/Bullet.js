@@ -11,6 +11,8 @@ function Bullet(id, direction, type, type_unit) {
     });
 }
 
+/**Смена картинки в соответствии с направлением*/
+
 Bullet.prototype.changeImage = function () {
 
     switch (this.direction) {
@@ -30,6 +32,8 @@ Bullet.prototype.changeImage = function () {
 
     this.bulletImage.appendTo(this.new_item);
 };
+
+/**Получение координат следующей по направлению ячейки*/
 
 Bullet.prototype.getNextItem = function () {
 
@@ -52,6 +56,8 @@ Bullet.prototype.getNextItem = function () {
 
 };
 
+/**Действие при полете снаряда*/
+
 Bullet.prototype.action = function () {
     if (this.new_item.hasClass('field_cell')) {
         this.new_item.removeClass('field_cell')
@@ -62,6 +68,9 @@ Bullet.prototype.action = function () {
         this.changeImage();
 
     } else if (this.new_item.hasClass('enemy') && (this.type !== 'enemy')) {
+
+        /**Если снаряд попадает в танк, то танк уничтожается*/
+
         this.new_item.find('.enemy')
             .remove();
 
@@ -75,6 +84,8 @@ Bullet.prototype.action = function () {
 
         animation.explosion(this.new_item);
 
+        /**Уменьшается количество оставшихся танков на правой панели игрового поля*/
+
         if (arrLastEnemy.length > 1) {
             arrLastEnemy.pop();
             render_last_enemy();
@@ -84,12 +95,16 @@ Bullet.prototype.action = function () {
             you_win();
         }
 
+        /**Если игра не окончена - генерируется новый вражеский танк*/
+
 
         if (gameIsRunning === true) {
             create_enemy('enemy', 'enemy_' + ++enemyCount, enemyCount * 100);
         }
 
     } else if (this.new_item.hasClass('tank')) {
+
+        /**Если снаряд попадает в танк, то танк уничтожается*/
 
         this.new_item.find('.tank')
             .remove();
@@ -104,10 +119,12 @@ Bullet.prototype.action = function () {
 
         animation.explosion(this.new_item);
 
+        /**Генерируется новый танк игрока*/
+
         create_tank('tank', 'tank_' + tankCount, 100 * tankCount++)
 
-
     } else if (this.new_item.hasClass('general')) {
+
         /**Уничтожение главного штаба*/
 
         var eagle = $('.cell-10-21');
@@ -130,13 +147,20 @@ Bullet.prototype.action = function () {
 
         animation.explosion(this.new_item);
 
+        /**Игра заканчивается*/
+
         game_over();
 
-
     } else if (this.new_item.hasClass('armor')) {
+
+        /**Если снаряд попадает в бетонное припятствие - дальше не летит, янимация попадания снаряда в стену*/
+
         animation.hitWall(this.new_item, this.direction);
         this.flight = false;
     } else if (this.new_item.hasClass('brick')) {
+
+        /**Если снаряд попадает в кирпичное припятствие - дальше не летит, янимация попадания снаряда в стену, кирпич пропадает*/
+
         animation.hitWall(this.new_item, this.direction);
         this.flight = false;
 
@@ -144,9 +168,15 @@ Bullet.prototype.action = function () {
             .addClass('field_cell')
 
     } else if (this.new_item.hasClass('outer_perimeter')) {
+
+        /**Если снаряд попадает во внешний периметр - дальше не летит, янимация попадания снаряда в стену*/
+
         animation.hitWall(this.new_item, this.direction);
         this.flight = false;
     } else if (this.new_item.hasClass('water')) {
+
+        /**Если снаряд попадает в воду - летит дальше над водой*/
+
         this.new_item.addClass('bullet')
             .attr('bullet-x', this.coords_x.toString())
             .attr('bullet-y', this.coords_y.toString())
@@ -154,6 +184,9 @@ Bullet.prototype.action = function () {
         this.changeImage();
 
     } else {
+
+        /**Если снаряд попадает в другое припятствие (лес) - летит дальше под ним*/
+
         animation.hitWall(this.new_item, this.direction);
         this.flight = false;
     }
@@ -161,6 +194,8 @@ Bullet.prototype.action = function () {
 
 
 Bullet.prototype.shot = function () {
+
+    /**Выстрел из танка - снаряд вылетает из дула*/
 
     if (this.type_unit === 'tank') {
         var sound = new Audio();
@@ -180,12 +215,12 @@ Bullet.prototype.shot = function () {
 
 Bullet.prototype.flightBullet = function () {
 
-    var bulletItem = $('[bullet-id = "' + this.id + '"]');
+    /**Полет снаряда*/
 
+    var bulletItem = $('[bullet-id = "' + this.id + '"]');
 
     this.coords_x = parseInt(bulletItem.attr('bullet-x'));
     this.coords_y = parseInt(bulletItem.attr('bullet-y'));
-
 
     bulletItem.not('.tank')
         .removeAttr('bullet-x')
@@ -195,7 +230,6 @@ Bullet.prototype.flightBullet = function () {
         .addClass(bulletItem.hasClass('water') ? '' : 'field_cell')
         .find('.bullet')
         .remove();
-
 
     this.new_item = this.getNextItem();
 

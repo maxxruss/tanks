@@ -1,0 +1,359 @@
+@mixin size_small {
+  width: 30px;
+  height: 30px;
+}
+
+@mixin size_big {
+  width: 60px;
+  height: 60px;
+}
+
+@mixin size_bullet {
+  width: 15px;
+  height: 15px;
+  margin: 7.5px;
+}
+
+@mixin hit_wall {
+  @include size_small;
+  z-index: 10;
+  position: absolute;
+}
+
+$hit_wall_back_1: url('../image/sprites_transparent.png') -479px -239px no-repeat;
+$hit_wall_back_2: url('../image/sprites_transparent.png') -509px -239px no-repeat;
+$hit_wall_back_3: url('../image/sprites_transparent.png') -539px -239px no-repeat;
+
+.game_wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.eagle {
+  @include size_small;
+  z-index: 2;
+  position: absolute;
+  right: -15px;
+  top: -15px;
+  background: url('../image/sprites_transparent.png') -571px -61px no-repeat;
+}
+
+.eagle_dead {
+  @include size_small;
+  z-index: 2;
+  position: absolute;
+  right: -15px;
+  top: -15px;
+  background: url('../image/sprites_transparent.png') -600px -61px no-repeat;
+}
+
+.game_field {
+
+}
+
+.game_wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.control {
+  width: 300px;
+  align-self: center;
+  margin: auto 20px;
+}
+
+.info,
+.shot,
+.start_again {
+  font-family: monospace, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.shot {
+  margin: 35px auto;
+  height: 35px;
+  line-height: 35px;
+  border: 8px solid black;
+  border-radius: 15px;
+}
+
+.up_buttons,
+.other_buttons {
+  text-align: center;
+}
+
+.game_over {
+  width: 60px;
+  height: 60px;
+  z-index: 25;
+  background: url('../image/sprites_transparent.png') -541px -343px no-repeat;
+  position: relative;
+  left: 38%;
+  top: -400px;
+  animation-name: game_over;
+  animation-duration: 5s;
+}
+
+@keyframes game_over {
+  0% {
+    left: 38%;
+    top: -31px;
+  }
+  100% {
+    left: 38%;
+    top: -400px;
+  }
+}
+
+.you_win {
+  width: 250px;
+  height: 60px;
+  z-index: 25;
+  position: relative;
+  left: 31%;
+  top: -400px;
+  animation-name: you_win;
+  animation-duration: 5s;
+  color: red;
+  font-size: 45px;
+  font-weight: 900;
+}
+
+@keyframes you_win {
+  0% {
+    left: 31%;
+    top: -42px;
+  }
+  100% {
+    left: 31%;
+    top: -400px;
+  }
+}
+
+
+.lastEnemyImage {
+  width: 15px;
+  height: 13px;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  background: url('../image/sprites.png') -601px -361px no-repeat;
+}
+
+.lastEnemy {
+  position: relative;
+  background: gray;
+}
+
+td {
+  @include size_small;
+  background: black;
+  position: relative;
+}
+
+.outer_perimeter {
+  background: gray;
+  position: relative;
+}
+
+.tank_left {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -60px 0 no-repeat;
+}
+
+.tank_right {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -180px 0 no-repeat;
+}
+
+.tank_up {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') 0 0 no-repeat;
+}
+
+.tank_down {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -120px 0 no-repeat;
+}
+
+.enemy_left {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -300px 0 no-repeat;
+}
+
+.enemy_right {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -420px 0 no-repeat;
+}
+
+.enemy_up {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -240px 0 no-repeat;
+}
+
+.enemy_down {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -360px 0 no-repeat;
+}
+
+.start_game {
+  width: 100px;
+  height: 30px;
+  align-items: center;
+}
+
+.bullet_left {
+  @include size_bullet;
+  background: url('../image/sprites_transparent.png') -615px -185px no-repeat;
+}
+
+.bullet_right {
+  @include size_bullet;
+  background: url('../image/sprites_transparent.png') -645px -185px no-repeat;
+}
+
+.bullet_up {
+  @include size_bullet;
+  background: url('../image/sprites_transparent.png') -602px -185px no-repeat;
+}
+
+.bullet_down {
+  @include size_bullet;
+  background: url('../image/sprites_transparent.png') -632px -185px no-repeat;
+}
+
+.exp_enemy_1 {
+  @include size_big;
+  z-index: 10;
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  background: url('../image/sprites_transparent.png') -570px -240px no-repeat;
+}
+
+.exp_enemy_2 {
+  @include size_big;
+  z-index: 10;
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  background: url('../image/sprites_transparent.png') -630px -240px no-repeat;
+}
+
+.appear_1 {
+  @include size_small;
+  background: url('../image/sprites.png') -481px -179px no-repeat;
+}
+
+.appear_2 {
+  @include size_small;
+  background: url('../image/sprites.png') -510px -179px no-repeat;
+}
+
+.appear_3 {
+  @include size_small;
+  background: url('../image/sprites.png') -540px -179px no-repeat;
+}
+
+.appear_4 {
+  @include size_small;
+  background: url('../image/sprites.png') -570px -179px no-repeat;
+}
+
+.hit_wall_up_1 {
+  @include hit_wall;
+  top: -15px;
+  background: $hit_wall_back_1;
+}
+
+.hit_wall_up_2 {
+  @include hit_wall;
+  top: -15px;
+  background: $hit_wall_back_2
+}
+
+.hit_wall_up_3 {
+  @include hit_wall;
+  top: -15px;
+  background: $hit_wall_back_3
+}
+
+.hit_wall_down_1 {
+  @include hit_wall;
+  bottom: -15px;
+  background: $hit_wall_back_1;
+}
+
+.hit_wall_down_2 {
+  @include hit_wall;
+  bottom: -15px;
+  background: $hit_wall_back_2
+}
+
+.hit_wall_down_3 {
+  @include hit_wall;
+  bottom: -15px;
+  background: $hit_wall_back_3
+}
+
+.hit_wall_left_1 {
+  @include hit_wall;
+  left: -15px;
+  background: $hit_wall_back_1;
+}
+
+.hit_wall_left_2 {
+  @include hit_wall;
+  left: -15px;
+  background: $hit_wall_back_2
+}
+
+.hit_wall_left_3 {
+  @include hit_wall;
+  left: -15px;
+  background: $hit_wall_back_3
+}
+
+.hit_wall_right_1 {
+  @include hit_wall;
+  right: -15px;
+  background: $hit_wall_back_1;
+}
+
+.hit_wall_right_2 {
+  @include hit_wall;
+  right: -15px;
+  background: $hit_wall_back_2
+}
+
+.hit_wall_right_3 {
+  @include hit_wall;
+  right: -15px;
+  background: $hit_wall_back_3
+}
+
+.armor {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -480px -30px no-repeat;
+}
+
+.water {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -480px -60px no-repeat;
+}
+
+.forest {
+  @include size_small;
+  position: absolute;
+  z-index: 11;
+  background: url('../image/sprites_transparent.png') -510px -60px no-repeat;
+}
+
+.brick {
+  @include size_small;
+  background: url('../image/sprites_transparent.png') -480px 0 no-repeat;
+}

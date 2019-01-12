@@ -1,8 +1,9 @@
-/**Выстрел танка*/
+/**Анимация*/
 
 function Animation() {
-
 }
+
+/**Появление танка*/
 
 Animation.prototype.appearance = function (unit) {
 
@@ -54,6 +55,8 @@ Animation.prototype.appearance = function (unit) {
 
 };
 
+/**Взрыв при уничтожении танка*/
+
 Animation.prototype.explosion = function (enemy_item) {
 
     var exp_view = $('<div />', {
@@ -70,10 +73,8 @@ Animation.prototype.explosion = function (enemy_item) {
             .remove()
     }
 
-
     setTimeout(exp_1, 150);
     setTimeout(exp_empty, 300);
-
 
     exp_view.appendTo(enemy_item);
 
@@ -81,6 +82,8 @@ Animation.prototype.explosion = function (enemy_item) {
     sound.src = 'music/enemy_kill.mp3';
     sound.play()
 };
+
+/**Взрыв при попадании в стену снаряда*/
 
 Animation.prototype.hitWall = function (unit, direction) {
     // console.log('анимация hit')
@@ -127,12 +130,7 @@ Animation.prototype.hitWall = function (unit, direction) {
     setTimeout(unit_empty, 450);
 
     hit_wall_image.appendTo(unit);
-
-    // var sound = new Audio();
-    // sound.src = 'music/hit_wall.mp3';
-    // sound.play()
-
-}
+};
 
 
 
