@@ -3,8 +3,8 @@ var enemy = new Enemy();
 var animation = new Animation();
 var tank = new Tank('tank', 'tank', 1);
 var BULLET_SPEED = 50;
-var ENEMY_SPEED = 1400;
-var enemyCount = 3;
+var ENEMY_SPEED = 700;
+var enemyCount = 4;
 var tankCount = 1;
 var enemy_unit_timer = [];
 var enemy_bullet_timer = [];
@@ -174,9 +174,9 @@ function create_enemy(type, type_unit, id_bullet) {
 
 function startGame() {
 
-    var sound = new Audio();
-    sound.src = 'music/title.mp3';
-    sound.play();
+    // var sound = new Audio();
+    // sound.src = 'music/title.mp3';
+    // sound.play();
 
     for (var i = 1; i <= enemyCount; i++) {
         create_enemy('enemy', 'enemy_' + i, i * 500);
