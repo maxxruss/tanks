@@ -1,4 +1,7 @@
+@import "normalize.css";
+
 @mixin size_small {
+  -moz-box-sizing: border-box; /* Для Firefox */
   width: 30px;
   height: 30px;
 }
@@ -71,6 +74,7 @@ $hit_wall_back_3: url('../image/sprites_transparent.png') -539px -239px no-repea
   font-size: 20px;
   font-weight: bold;
   text-align: center;
+  height: 30px;
 }
 
 .shot {
@@ -149,10 +153,12 @@ $hit_wall_back_3: url('../image/sprites_transparent.png') -539px -239px no-repea
   background: gray;
 }
 
+
 td {
   @include size_small;
   background: black;
   position: relative;
+  display: inline-block;
 }
 
 .outer_perimeter {
@@ -354,6 +360,6 @@ td {
 }
 
 .brick {
-  @include size_small;
   background: url('../image/sprites_transparent.png') -480px 0 no-repeat;
+  @include size_small;
 }
